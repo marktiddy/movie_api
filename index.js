@@ -4,9 +4,6 @@ const express = require("express"),
   app = express(),
   morgan = require("morgan");
 
-//TO DO IMPLENT UUID AND BODY-PARSER
-//USE BODY PARSER!
-
 //Create a JSON object
 let Movies = [
   {
@@ -131,7 +128,7 @@ let Users = [
 app.use(express.static("public"));
 
 //Set up bodyParser
-app.use(bodyParser.json);
+app.use(bodyParser.json());
 
 //Set up logging with morgan
 app.use(morgan("common"));
@@ -155,8 +152,8 @@ app.get("/movies", (req, res) => {
 //Return details on a specific movie
 app.get("/movies/:title", (req, res) => {
   res.json(
-    Movies.find(title => {
-      return Movies.title === req.params.title;
+    Movies.find(movie => {
+      return movie.title === req.params.title;
     })
   );
 });
@@ -164,8 +161,9 @@ app.get("/movies/:title", (req, res) => {
 //Return movie by director
 app.get("/movies/director/:name", (req, res) => {
   res.json(
-    Movies.find(name => {
-      return Movies.director === req.params.name;
+    Movies.find(movie => {
+      console.log(Movies.director);
+      return movie.director === req.params.name;
     })
   );
 });
@@ -173,18 +171,20 @@ app.get("/movies/director/:name", (req, res) => {
 //Return movie by genre
 app.get("/movies/genre/:genre", (req, res) => {
   var moviesByGenre = [];
+
   for (var i = 0; i < Movies.length; i++) {
+    console.log(i);
     if (Movies[i].genre === req.params.genre) {
       moviesByGenre.push(Movies[i]);
     }
+  }
 
-    if (moviesByGenre.length != 0) {
-      return res.json(moviesByGenre);
-    } else {
-      res
-        .status(404)
-        .send(`We have no movies matching the genre: ${req.params.genre}`);
-    }
+  if (moviesByGenre.length != 0) {
+    return res.json(moviesByGenre);
+  } else {
+    res
+      .status(404)
+      .send(`We have no movies matching the genre: ${req.params.genre}`);
   }
 });
 
