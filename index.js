@@ -191,34 +191,54 @@ app.get("/movies/genre/:genre", (req, res) => {
 //User Registration API Request Handling
 app.post("/users", (req, res) => {
   let newUser = req.body;
+  console.log(req.body);
 
-  if (!newUser.name) {
+  if (!newUser.username) {
     res.status(400).send("There is no username ");
   } else {
     newUser.userId = uuid.v4();
     newUser.favourites = {};
     Users.push(newUser);
-    res.status(201).send(newStudent);
+    res.status(201).send(newUser);
   }
 });
 
 //Update a user info
 app.put("/users/:username", (req, res) => {
   let infoToUpdate = req.body;
-  let user = Users.find(username => {
-    return Users.username === req.params.username;
+  let originalUsername;
+  let user = Users.find(user => {
+    return user.username === req.params.username;
   });
+  originalUsername = user.username;
+  console.log(`original name ${originalUsername}`);
+  console.log("User is " + user);
 
   if (user) {
-    //Assuming our JSON might have a few things to update...
-    for (var i = 0; i < infoToUpdate.length; i++) {
-      user.infoToUpdate[i] == infoToUpdate[i];
+    if (infoToUpdate.username != undefined) {
+      user.username = infoToUpdate.username;
+    } else if (infoToUpdate.password != undefined) {
+      user.password = infoToUpdate.password;
+    } else if (infoToUpdate.dob != undefined) {
+      user.dob = infoToUpdate.dob;
+    } else if (infoToUpdate.email != undefined) {
+      user.email = infoToUpdate.email;
+    } else {
+      //User is expecting us to update something that doesn't exist so we don't do that
     }
-    //Update the list
-    Users.userId[user.userId] == user;
+
+    //Let's update the database
+    for (var i = 0; i < Users.length; i++) {
+      if (Users[i].username === originalUsername) {
+        Users[i] = user;
+      }
+    }
+
     res
       .status(201)
-      .send(`We have updated your user account. Your new info is ${user}`);
+      .send(
+        `We have updated your user account. Your new info is ${user.username}`
+      );
   } else {
     res
       .status(404)
@@ -231,16 +251,21 @@ app.put("/users/:username", (req, res) => {
 //Allow user to add to list of favourites
 app.put("/users/:username/:movieTitle", (req, res) => {
   let user = Users.find(username => {
-    return Users.username === req.params.username;
+    return username.username === req.params.username;
   });
 
   if (user) {
-    user.favourites.uuid.v4() = req.params.movieTitle;
-    Users.userId[user.userId] == user;
+    user.favourites[uuid.v4()] = req.params.movieTitle;
+
+    var faveArray = [];
+    Object.keys(user.favourites).forEach(function(fave) {
+      faveArray.push(` ${user.favourites[fave]}`);
+    });
+
     res
       .status(201)
       .send(
-        `Successfully added ${req.params.movieTitle} to your favourites. Your favourite movies are ${user.favourites}`
+        `Successfully added ${req.params.movieTitle} to your favourites. Your favourites are now ${faveArray}`
       );
   } else {
     res
@@ -254,50 +279,45 @@ app.put("/users/:username/:movieTitle", (req, res) => {
 //Allow user to remove a movie from their favourites
 app.delete("/users/:username/:movieTitle", (req, res) => {
   let user = Users.find(username => {
-    return Users.username === req.params.username;
+    return username.username === req.params.username;
   });
 
   if (user) {
-    //Check if the request movie is in their favourites
-    for (var i = 0; i < user.favourites.length; i++) {
-      if (user.favourites[i].hasOwnProperty(req.params.movieTitle)) {
-        delete user.favourites[i];
+    var removedSomething = false;
+    //Remove the property
+    Object.keys(user.favourites).forEach(function(movie) {
+      if (user.favourites[movie] === req.params.movieTitle) {
+        delete user.favourites[movie];
+        removedSomething = true;
         res
           .status(201)
           .send(
-            `${req.params.movieTitle} has been removed from your favourites`
+            `The movie ${req.params.movieTitle} has been removed from your favourites`
           );
-      } else {
-        res
-          .status(404)
-          .send(`The movie ${req.params.movieTitle} isn't in your favourites`);
       }
+    });
+
+    if (removedSomething === false) {
+      res
+        .status(404)
+        .send(`The movie ${req.params.movieTitle} isn't in your favourites`);
     }
   } else {
-    res
-      .status(404)
-      .send(
-        `We cannot find a user matching the username ${req.params.username}`
-      );
+    res.status(404).send(`The username ${req.params.username} doesn't exist`);
   }
 });
 
 //Deregister A User
 app.delete("/users/:username", (req, res) => {
   let user = Users.find(username => {
-    return Users.username === req.params.username;
+    return username.username === req.params.username;
   });
 
   if (user) {
-    //delete the user
-    for (var i = 0; i < Users.length; i++) {
-      if (Users[i].username === req.params.username) {
-        delete Users[i];
-        res
-          .status(201)
-          .send(`Username ${req.params.username} has been deleted`);
-      }
-    }
+    Users.filter(function(obj) {
+      return obj.username != req.params.username;
+    });
+    res.status(201).send(`Username ${req.params.username} has been deleted`);
   } else {
     res
       .status(404)

@@ -6,13 +6,114 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <link rel="stylesheet" href="css/doc_style.css" type="text/css" />
     <title>Movie API - Documentation</title>
   </head>
   <body>
-    <h1>Movie API - Documentation</h1>
+    <h1>Christmas Movie API - Documentation</h1>
     <p>
       This documentation outlines the use of the movie API which allows users to
-      find information on a chosen movie
+      find information on a chosen movie, make it a favourite and manage their
+      user account
     </p>
+    <table>
+      <tr>
+        <th><strong>Request</strong></th>
+        <th><strong>URL</strong></th>
+        <th><strong>HTTP Method</strong></th>
+        <th><strong>Request body data format</strong></th>
+        <th><strong>Response body data format</strong></th>
+      </tr>
+      <tr>
+        <td>Return a list of all movies</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding data about all of the movies</td>
+      </tr>
+      <tr>
+        <td>Return information on a single movie requested by the user</td>
+        <td>/movies/[TITLE]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>
+          A JSON object holding data about a single movie containing the name,
+          genre, director, description, image URL and whether it’s featured or
+          not
+        </td>
+      </tr>
+      <tr>
+        <td>Return data about a director by name</td>
+        <td>/movies/director/[DIRECTOR-NAME]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>A JSON object holding a list of movies by a chosen director</td>
+      </tr>
+      <tr>
+        <td>
+          Return data about a genre (description of genre) by name/title (e.g.
+          Thriller)
+        </td>
+        <td>/movies/genre/[GENRE]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>
+          A description of a genre and a list of movies in that chosen genre
+        </td>
+      </tr>
+      <tr>
+        <td>Allow new user to register</td>
+        <td>/users</td>
+        <td>POST</td>
+        <td>
+          A JSON object containing details about the new user with structure<br />
+          <span
+            ><br />{<br />username: “MarkHoppus”,<br />password: “xyz”,<br />email:
+            “x@y.com",<br />dob: “18/10/86”<br />}</span
+          >
+        </td>
+        <td>
+          A text message indicating whether the user was successfully added
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Allow user to update their user info (username, password, email, DOB)
+        </td>
+        <td>/users/[USERNAME]</td>
+        <td>PUT</td>
+        <td>
+          A JSON object containing the piece of info to update e.g.<br /><br />
+          <span>{<br />username: “GeoffHoppus”<br />}</span>
+        </td>
+        <td>A text message indicating whether the update was successful</td>
+      </tr>
+      <tr>
+        <td>Allow user to add a movie to their list of favourites</td>
+        <td>/users/[USERNAME]/[FAVOURITE]</td>
+        <td>PUT</td>
+        <td>None</td>
+        <td>
+          A JSON object showing all of the users favourite movies including the
+          new addition
+        </td>
+      </tr>
+      <tr>
+        <td>Allow users to remove movie from their list of favourites</td>
+        <td>/users/[USERNAME]/[FAVOURITE]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A text including whether the update was successful</td>
+      </tr>
+      <tr>
+        <td>Allow users to deregister</td>
+        <td>users/[USERNAME]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>
+          A text message indicating whether the user was successfully deleted
+        </td>
+      </tr>
+    </table>
   </body>
 </html>
