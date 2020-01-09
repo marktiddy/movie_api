@@ -2,126 +2,15 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   uuid = require("uuid"),
   app = express(),
-  morgan = require("morgan");
+  morgan = require("morgan"),
+  mongoose = require("mongoose"),
+  Models = require("./models.js");
 
-//Create a JSON object
-let Movies = [
-  {
-    title: "The Muppets Christmas Carol",
-    description:
-      "The Muppet characters tell their version of the classic tale of an old and bitter miser's redemption on Christmas Eve",
-    director: "Brian Henson",
-    genre: "Family",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BN2Y0NWRkNWItZWEwNi00MDNlLWJmZDYtNTkwYzI5Nzg4MjVjXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg",
-    featured: true
-  },
-  {
-    title: "Love Actually",
-    description:
-      "Follows the lives of eight very different couples in dealing with their love lives in various loosely interrelated tales all set during a frantic month before Christmas in London, England.",
-    director: "Richard Curtis",
-    genre: "Romance",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BMTY4NjQ5NDc0Nl5BMl5BanBnXkFtZTYwNjk5NDM3._V1_UX182_CR0,0,182,268_AL_.jpg",
-    featured: true
-  },
-  {
-    title: "It's a Wonderful Life",
-    description:
-      "An angel is sent from Heaven to help a desperately frustrated businessman by showing him what life would have been like if he had never existed.",
-    director: "Frank Capra",
-    genre: "Family",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BZjc4NDZhZWMtNGEzYS00ZWU2LThlM2ItNTA0YzQ0OTExMTE2XkEyXkFqcGdeQXVyNjUwMzI2NzU@._V1_UY268_CR1,0,182,268_AL_.jpg",
-    featured: false
-  },
-  {
-    title: "The Holiday",
-    description:
-      "Two women troubled with guy-problems swap homes in each other's countries, where they each meet a local guy and fall in love.",
-    director: "Nancy Meyers",
-    genre: "Romance",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BMTI1MDk4MzA2OF5BMl5BanBnXkFtZTYwMjQ3NDc3._V1_UX182_CR0,0,182,268_AL_.jpg",
-    featured: false
-  },
-  {
-    title: "Elf",
-    description:
-      "After discovering he is a human, a man raised as an elf at the North Pole decides to travel to New York City to locate his real father.",
-    director: "Jon Favreau",
-    genre: "Family",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BMzUxNzkzMzQtYjIxZC00NzU0LThkYTQtZjNhNTljMTA1MDA1L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg",
-    featured: false
-  },
-  {
-    title: "The Santa Clause",
-    description:
-      "When a man inadvertently makes Santa fall off of his roof on Christmas Eve, he finds himself magically recruited to take his place.",
-    director: "John Pasquin",
-    genre: "Family",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BMTZlNzk1MjItYjJlYy00MTAxLWJkNjEtZmNiNmVlNjQ4NDE5XkEyXkFqcGdeQXVyMzI0NDc4ODY@._V1_UX182_CR0,0,182,268_AL_.jpg",
-    featured: true
-  },
-  {
-    title: "The Santa Clause 2",
-    description:
-      "Scott Calvin has been a humble Santa Claus for nearly ten years, but it might come to an end if he doesn't find a Mrs. Claus.",
-    director: "Michael Lembeck",
-    genre: "Family",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BNjU0Njk5MTA2Nl5BMl5BanBnXkFtZTYwODkzMzQ3._V1_UX182_CR0,0,182,268_AL_.jpg",
-    featured: false
-  },
+//Constants for Models
+const Movies = Models.Movie;
+const Users = Models.User;
 
-  {
-    title: "Last Christmas",
-    description:
-      "Kate is a young woman subscribed to bad decisions. Working as an elf in a year round Christmas store is not good for the wannabe singer. However, she meets Tom there. Her life takes a new turn. For Kate, it seems too good to be true.",
-    director: "Paul Feig",
-    genre: "Romance",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BNTQ4ZmY0NjgtYzVhNy00NzhiLTk3YTYtNzM1MTdjM2VhZDA3XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX182_CR0,0,182,268_AL_.jpg",
-    featured: true
-  },
-  {
-    title: "Home Alone",
-    description:
-      "An eight-year-old troublemaker must protect his house from a pair of burglars when he is accidentally left home alone by his family during Christmas vacation.",
-    director: "Chris Columbus",
-    genre: "Family",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BMzFkM2YwOTQtYzk2Mi00N2VlLWE3NTItN2YwNDg1YmY0ZDNmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg",
-    featured: false
-  },
-  {
-    title: "Die Hard",
-    description:
-      "An NYPD officer tries to save his wife and several others taken hostage by German terrorists during a Christmas party at the Nakatomi Plaza in Los Angeles.",
-    director: "John McTiernan",
-    genre: "Action",
-    imageURL:
-      "https://m.media-amazon.com/images/M/MV5BZjRlNDUxZjAtOGQ4OC00OTNlLTgxNmQtYTBmMDgwZmNmNjkxXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UX182_CR0,0,182,268_AL_.jpg",
-    featured: true
-  }
-];
-
-let Users = [
-  {
-    username: "tarkmiddy",
-    password: "1287998",
-    userId: "001",
-    dob: "18/10/86",
-    email: "hello@marktiddy.co.uk",
-    favourites: {
-      001: "Love Actually",
-      002: "The Holiday"
-    }
-  }
-];
+mongoose.connect("mongodb://localhost:27017/myFlixDB");
 
 //Get routing
 //Set up static
@@ -146,185 +35,224 @@ app.get("/", (req, res) => {
 
 //Returns all movies
 app.get("/movies", (req, res) => {
-  res.json(Movies);
+  Movies.find()
+    .then(movies => {
+      if (!movies) {
+        res.status(400).send("There are no movies");
+      } else {
+        res.status(201).json(movies);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(400).send(`Error: ${error}`);
+    });
 });
 
 //Return details on a specific movie
 app.get("/movies/:title", (req, res) => {
-  res.json(
-    Movies.find(movie => {
-      return movie.title === req.params.title;
+  Movies.findOne({ Title: req.params.title })
+    .then(movie => {
+      if (!movie) {
+        res
+          .status(400)
+          .send(`We didn't find a movie title ${req.params.title}`);
+      } else {
+        res.status(201).json(movie);
+      }
     })
-  );
+    .catch(error => {
+      console.error(error);
+      res.status(400).send(`Error: ${error}`);
+    });
 });
 
 //Return movie by director
 app.get("/movies/director/:name", (req, res) => {
-  res.json(
-    Movies.find(movie => {
-      console.log(Movies.director);
-      return movie.director === req.params.name;
+  Movies.find({ "Director.Name": req.params.name })
+    .then(movies => {
+      if (!movies) {
+        res
+          .status(400)
+          .send(
+            `We didn't find any movies where ${req.params.name} was the director`
+          );
+      } else {
+        res.status(201).json(movies);
+      }
     })
-  );
+    .catch(error => {
+      console.error(error);
+      res.status(400).send(`Error: ${error}`);
+    });
 });
 
 //Return movie by genre
 app.get("/movies/genre/:genre", (req, res) => {
-  var moviesByGenre = [];
-
-  for (var i = 0; i < Movies.length; i++) {
-    console.log(i);
-    if (Movies[i].genre === req.params.genre) {
-      moviesByGenre.push(Movies[i]);
-    }
-  }
-
-  if (moviesByGenre.length != 0) {
-    return res.json(moviesByGenre);
-  } else {
-    res
-      .status(404)
-      .send(`We have no movies matching the genre: ${req.params.genre}`);
-  }
+  Movies.find({ "Genre.Name": req.params.genre })
+    .then(movies => {
+      if (!movies) {
+        res
+          .status(400)
+          .send(`We didn't find any movies with the genre ${req.params.genre}`);
+      } else {
+        res.status(201).json(movies);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(400).send(`Error: ${error}`);
+    });
 });
 
-//User Registration API Request Handling
-app.post("/users", (req, res) => {
-  let newUser = req.body;
-  console.log(req.body);
+//User Registration API Request Handling - UPDATED with mongoose
 
-  if (!newUser.username) {
-    res.status(400).send("There is no username ");
-  } else {
-    newUser.userId = uuid.v4();
-    newUser.favourites = {};
-    Users.push(newUser);
-    res.status(201).send(newUser);
-  }
+/*Note: We'll expect a JSON in this format
+{
+  ID: Integer,
+    Username: String,
+    Password: String,
+    Email: String,
+    Birthday:Date
+
+}
+*/
+app.post("/users", (req, res) => {
+  Users.findOne({ Username: req.body.Username })
+    .then(user => {
+      if (user) {
+        return res.status(400).send(req.body.Username + "Already exists");
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday
+        })
+          .then(user => {
+            res.status(201).json(user);
+          })
+          .catch(error => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+          });
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
 });
 
 //Update a user info
+//AT SOME POINT REFACTURE THIS TO A CATCH BLOCK
+/*
+We'll expect a JSON in this format
+{
+Username: String, (required)
+Password: String, (required)
+Email: String, (required)
+Birthday: Date
+} */
 app.put("/users/:username", (req, res) => {
-  let infoToUpdate = req.body;
-  let originalUsername;
-  let user = Users.find(user => {
-    return user.username === req.params.username;
-  });
-  originalUsername = user.username;
-  console.log(`original name ${originalUsername}`);
-  console.log("User is " + user);
-
-  if (user) {
-    if (infoToUpdate.username != undefined) {
-      user.username = infoToUpdate.username;
-    } else if (infoToUpdate.password != undefined) {
-      user.password = infoToUpdate.password;
-    } else if (infoToUpdate.dob != undefined) {
-      user.dob = infoToUpdate.dob;
-    } else if (infoToUpdate.email != undefined) {
-      user.email = infoToUpdate.email;
-    } else {
-      //User is expecting us to update something that doesn't exist so we don't do that
-    }
-
-    //Let's update the database
-    for (var i = 0; i < Users.length; i++) {
-      if (Users[i].username === originalUsername) {
-        Users[i] = user;
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday
       }
-    }
+    },
+    { new: true }
+  )
+    .then(function(error, updatedUser) {
+      if (error) {
+        console.error(error);
+        res.status(500).send(`Error: ${error}`);
+      } else {
+        res.json(updatedUser);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send(`Error: ${error}`);
+    });
+});
 
-    res
-      .status(201)
-      .send(
-        `We have updated your user account. Your new info is ${user.username}`
-      );
-  } else {
-    res
-      .status(404)
-      .send(
-        `We cannot find a user matching the username ${req.params.username}`
-      );
-  }
+//Get user by username - Mongoose
+app.get("/users/:Username", (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then(function(user) {
+      res.status(201).json(user);
+    })
+    .catch(function(error) {
+      console.error(error);
+      res.status(500).send("Error: " + error);
+    });
 });
 
 //Allow user to add to list of favourites
-app.put("/users/:username/:movieTitle", (req, res) => {
-  let user = Users.find(username => {
-    return username.username === req.params.username;
-  });
-
-  if (user) {
-    user.favourites[uuid.v4()] = req.params.movieTitle;
-
-    var faveArray = [];
-    Object.keys(user.favourites).forEach(function(fave) {
-      faveArray.push(` ${user.favourites[fave]}`);
+app.put("/users/:username/:movieID", (req, res) => {
+  //with catch block
+  Users.findOneAndUpdate(
+    { Username: req.params.username },
+    { $push: { Favourites: req.params.movieID } },
+    { new: true }
+  )
+    .then(function(user) {
+      if (!user) {
+        res
+          .status(400)
+          .send(`We could find a user matching ${req.params.username}`);
+      } else {
+        res.status(200).send(user);
+      }
+    })
+    .catch(function(error) {
+      console.log(error);
+      res.status(500).send(`Error: ${error}`);
     });
-
-    res
-      .status(201)
-      .send(
-        `Successfully added ${req.params.movieTitle} to your favourites. Your favourites are now ${faveArray}`
-      );
-  } else {
-    res
-      .status(404)
-      .send(
-        `We cannot find a user matching the username ${req.params.username}`
-      );
-  }
 });
 
 //Allow user to remove a movie from their favourites
 app.delete("/users/:username/:movieTitle", (req, res) => {
-  let user = Users.find(username => {
-    return username.username === req.params.username;
-  });
-
-  if (user) {
-    var removedSomething = false;
-    //Remove the property
-    Object.keys(user.favourites).forEach(function(movie) {
-      if (user.favourites[movie] === req.params.movieTitle) {
-        delete user.favourites[movie];
-        removedSomething = true;
-        res
-          .status(201)
-          .send(
-            `The movie ${req.params.movieTitle} has been removed from your favourites`
-          );
+  Movies.findOne({ Title: req.params.movieTitle })
+    .then(movie => {
+      if (!movie) {
+        res.status(500).send(`We didn't find ${movieTitle} in your favourites`);
+      } else {
+        Users.findOneAndDelete(
+          { Username: req.params.username },
+          { $pull: { Favourites: movie._id } }
+        ).then(results => {
+          console.log(`Results of removal ${results}`);
+          res
+            .status(201)
+            .send(`We removed ${movie.Title} from your favourites.`);
+        });
       }
+    })
+    .catch(error => {
+      console.error(error), res.status(500).send(`Error: ${error}`);
     });
-
-    if (removedSomething === false) {
-      res
-        .status(404)
-        .send(`The movie ${req.params.movieTitle} isn't in your favourites`);
-    }
-  } else {
-    res.status(404).send(`The username ${req.params.username} doesn't exist`);
-  }
 });
 
-//Deregister A User
+//Delete A User by Username - Updated for mongoose
 app.delete("/users/:username", (req, res) => {
-  let user = Users.find(username => {
-    return username.username === req.params.username;
-  });
-
-  if (user) {
-    Users.filter(function(obj) {
-      return obj.username != req.params.username;
+  Users.findOneAndDelete({ Username: req.params.username })
+    .then(function(user) {
+      if (!user) {
+        res.status(400).send(`${req.params.username} was not found`);
+      } else {
+        res.status(200).send(`${req.params.username} was deleted`);
+      }
+    })
+    .catch(function(error) {
+      console.error(error);
+      res.status(500).send(`Error: ${error}`);
     });
-    res.status(201).send(`Username ${req.params.username} has been deleted`);
-  } else {
-    res
-      .status(404)
-      .send(
-        `We cannot find a user matching the username ${req.params.username}`
-      );
-  }
 });
 
 //Other Request Handling

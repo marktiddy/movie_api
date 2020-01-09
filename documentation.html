@@ -16,6 +16,41 @@
       find information on a chosen movie, make it a favourite and manage their
       user account
     </p>
+    <h2>Movie Formatting</h2>
+    <p>
+      A returned movie JSON object has the following format<br /><br />{<br />
+      Title: { type: String, required: true },<br />
+      Description: { type: String, required: true },<br />
+      Genre: {<br />
+      Name: String,<br />
+      Description: String<br />
+      },<br />
+      Director: {<br />
+      Name: String,<br />
+      Bio: String,<br />
+      Birth: String,<br />
+      Death: String<br />
+      },<br />
+      Actors: [String],<br />
+      Imageurl: String,<br />
+      Featured: Boolean<br />
+      }<br />
+    </p>
+    <h2>User Formatting</h2>
+    <p>
+      A returned user JSON object has the following format<br /><br />
+
+      {<br />
+      ID: Integer,<br />
+      Username: String,<br />
+      Password: String,<br />
+      Email: String,<br />
+      Birthday:Date<br />
+
+      }<br />
+    </p>
+
+    <h2>API Reqests</h2>
     <table>
       <tr>
         <th><strong>Request</strong></th>
@@ -29,7 +64,9 @@
         <td>/movies</td>
         <td>GET</td>
         <td>None</td>
-        <td>A JSON object holding data about all of the movies</td>
+        <td>
+          A JSON object holding data about all of the movies.
+        </td>
       </tr>
       <tr>
         <td>Return information on a single movie requested by the user</td>
@@ -68,8 +105,8 @@
         <td>
           A JSON object containing details about the new user with structure<br />
           <span
-            ><br />{<br />username: “MarkHoppus”,<br />password: “xyz”,<br />email:
-            “x@y.com",<br />dob: “18/10/86”<br />}</span
+            ><br />{<br />"Username": “MarkHoppus”,<br />"Password": “xyz”,<br />"Email":
+            “x@y.com",<br />"Birthday": “1986-10-18”<br />}</span
           >
         </td>
         <td>
@@ -83,8 +120,11 @@
         <td>/users/[USERNAME]</td>
         <td>PUT</td>
         <td>
-          A JSON object containing the piece of info to update e.g.<br /><br />
-          <span>{<br />username: “GeoffHoppus”<br />}</span>
+          A JSON object containing info to update e.g.<br /><br />
+          <span
+            ><br />{<br />"Username": “MarkHoppus”,<br />"Password": “xyz”,<br />"Email":
+            “x@y.com",<br />"Birthday": “1986-10-18”<br />}</span
+          >
         </td>
         <td>A text message indicating whether the update was successful</td>
       </tr>
