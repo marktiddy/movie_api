@@ -181,6 +181,18 @@ app.put("/users/:username", (req, res) => {
     });
 });
 
+//Get all users
+app.get("/allusers", (req, res) => {
+  Users.find()
+    .then(users => {
+      res.status(201).json(users);
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send(`Error: ${error}`);
+    });
+});
+
 //Get user by username - Mongoose
 app.get("/users/:Username", (req, res) => {
   Users.findOne({ Username: req.params.Username })
@@ -223,19 +235,33 @@ app.delete("/users/:username/:movieTitle", (req, res) => {
       if (!movie) {
         res.status(500).send(`We didn't find ${movieTitle} in your favourites`);
       } else {
-        Users.findOneAndDelete(
+        //Let's delete something
+        //do the actual deleting
+        Users.findOneAndUpdate(
           { Username: req.params.username },
-          { $pull: { Favourites: movie._id } }
-        ).then(results => {
-          console.log(`Results of removal ${results}`);
-          res
-            .status(201)
-            .send(`We removed ${movie.Title} from your favourites.`);
-        });
+          { $pull: { Favourites: `${movie._id}` } },
+          { new: true }
+        )
+          .then(results => {
+            if (!results) {
+              res.status(400).send(`We had a problem removing the item`);
+            } else {
+              res
+                .status(201)
+                .send(
+                  `We removed ${movie.Title} from your favourites. Your favourites are now ${results.Favourites}`
+                );
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            res.status(400).send(`Error: ${error}`);
+          });
       }
     })
     .catch(error => {
-      console.error(error), res.status(500).send(`Error: ${error}`);
+      console.error(error);
+      res.status(400).send(`Error: ${error}`);
     });
 });
 
