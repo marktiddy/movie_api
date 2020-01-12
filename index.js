@@ -5,6 +5,9 @@ const express = require("express"),
   morgan = require("morgan"),
   mongoose = require("mongoose"),
   Models = require("./models.js");
+//Add our authentication
+const passport = require("passport");
+require("./passport");
 
 //Constants for Models
 const Movies = Models.Movie;
@@ -18,6 +21,9 @@ app.use(express.static("public"));
 
 //Set up bodyParser
 app.use(bodyParser.json());
+
+var auth = require("./auth")(app);
+router.use(bodyParser.json());
 
 //Set up logging with morgan
 app.use(morgan("common"));
@@ -34,20 +40,24 @@ app.get("/", (req, res) => {
 });
 
 //Returns all movies
-app.get("/movies", (req, res) => {
-  Movies.find()
-    .then(movies => {
-      if (!movies) {
-        res.status(400).send("There are no movies");
-      } else {
-        res.status(201).json(movies);
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      res.status(400).send(`Error: ${error}`);
-    });
-});
+app.get(
+  "/movies",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.find()
+      .then(movies => {
+        if (!movies) {
+          res.status(400).send("There are no movies");
+        } else {
+          res.status(201).json(movies);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        res.status(400).send(`Error: ${error}`);
+      });
+  }
+);
 
 //Return details on a specific movie
 app.get("/movies/:title", (req, res) => {
