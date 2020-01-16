@@ -10,7 +10,7 @@ const express = require("express"),
 const { check, validationResult } = require("express-validator");
 
 //Set up cors for limited API access
-var allowedOrigins = ["http://localhost:8080"];
+//var allowedOrigins = ["http://localhost:8080"];
 
 app.use(
   cors({
@@ -33,7 +33,10 @@ mongoose.set("useFindAndModify", false);
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect("mongodb://localhost:27017/myFlixDB");
+//mongoose.connect("mongodb://localhost:27017/myFlixDB");
+mongoose.connect(
+  "mongodb+srv://myFlixDBadmin:jahJab-xedwud-hazki5@cluster0-lxob6.mongodb.net/test?retryWrites=true&w=majority"
+);
 
 //Get routing
 //Set up static

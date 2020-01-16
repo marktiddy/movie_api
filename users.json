@@ -1,0 +1,4 @@
+{"_id":{"$oid":"5e12290e6922e626cd3d95c5"},"Username":"eleanorrigby","Email":"eleanorrigby@beatles.com","Password":"anotherPassw0rd","Favourites":[],"Birthday":{"$date":"1970-01-01T00:00:01.961Z"}}
+{"_id":{"$oid":"5e1229166922e626cd3d95c6"},"Username":"markhoppus","Email":"mark@blink182.com","Password":"budda","Favourites":[],"Birthday":{"$date":"1970-01-01T00:00:01.954Z"}}
+{"_id":{"$oid":"5e170223c437e114d72086c6"},"Favourites":[],"Username":null,"Password":"ForgetthePrinces","Email":"mario@check-a-trade.com","Birthday":{"$date":"1985-01-01T00:00:00Z"},"__v":0}
+{"_id":{"$oid":"5e1b49dd3e9c34109e6c0f5e"},"Favourites":[{"$oid":"5e1226c96922e626cd3d95b8"}],"Username":"tarkmiddy","Password":"AdifferentPassword","Email":"marktiddy@icloud.com","Birthday":{"$date":"1986-10-18T00:00:00Z"},"__v":0}
