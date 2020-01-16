@@ -4,7 +4,30 @@ const express = require("express"),
   app = express(),
   morgan = require("morgan"),
   mongoose = require("mongoose"),
-  Models = require("./models.js");
+  Models = require("./models.js"),
+  cors = require("cors");
+
+const { check, validationResult } = require("express-validator");
+
+//Set up cors for limited API access
+var allowedOrigins = ["http://localhost:8080"];
+
+app.use(
+  cors({
+    origin: function(origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        //The domain isn't allowed
+        var message = `The CORS policy for this application doesn't allow access from origin ${origin}`;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    }
+  })
+);
+
+//Sort out mongoose depreciation
+mongoose.set("useFindAndModify", false);
 
 //Constants for Models
 const Movies = Models.Movie;
@@ -129,7 +152,7 @@ app.get(
   }
 );
 
-//User Registration API Request Handling - UPDATED with mongoose
+//User Registration API Request Handling
 
 /*Note: We'll expect a JSON in this format
 {
@@ -141,32 +164,60 @@ app.get(
 
 }
 */
-app.post("/users", (req, res) => {
-  Users.findOne({ Username: req.body.Username })
-    .then(user => {
-      if (user) {
-        return res.status(400).send(req.body.Username + "Already exists");
-      } else {
-        Users.create({
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday
-        })
-          .then(user => {
-            res.status(201).json(user);
+app.post(
+  "/users",
+  //Let's validate the input
+  [
+    check("Username", "Username is required").isLength(
+      { min: 5 },
+      check(
+        "Username",
+        "Username contains non alphanumeric characters - not allowed"
+      ).isAlphanumeric(),
+      check("Password", "Password is required")
+        .not()
+        .isEmail(),
+      check("Email", "Email does not appear to be valid").isEmail()
+    )
+  ],
+
+  (req, res) => {
+    //Get validation results
+    var errors = validationResult(req);
+
+    //Check we don't have validation issues
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    //Hash the password
+    var hashedPassword = Users.hashedPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username })
+      .then(user => {
+        if (user) {
+          return res.status(400).send(req.body.Username + "Already exists");
+        } else {
+          Users.create({
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
           })
-          .catch(error => {
-            console.error(error);
-            res.status(500).send("Error: " + error);
-          });
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      res.status(500).send("Error: " + error);
-    });
-});
+            .then(user => {
+              res.status(201).json(user);
+            })
+            .catch(error => {
+              console.error(error);
+              res.status(500).send("Error: " + error);
+            });
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        res.status(500).send("Error: " + error);
+      });
+  }
+);
 
 //Update a user info
 
@@ -182,8 +233,28 @@ Birthday: Date
 app.put(
   "/users/:username",
   passport.authenticate("jwt", { session: false }),
+
+  //Validate the input
+  [
+    check("Username", "Username is required").isLength({ min: 5 }),
+    check(
+      "USername",
+      "Username contains non alphanumeric characters - not allowed"
+    ).isAlphanumeric(),
+    check("Password", "Password is required")
+      .not()
+      .isEmpty(),
+    check("Email", "Email does not appear to be valid").isEmail()
+  ],
+
   (req, res) => {
-    var oldData = Users.findOne({ Username: req.body.Username });
+    //Check input is valid
+    var errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     Users.findOneAndUpdate(
       { Username: req.params.username },
       {
@@ -203,22 +274,6 @@ app.put(
         } else {
           res.json(updatedUser);
         }
-      })
-      .catch(error => {
-        console.error(error);
-        res.status(500).send(`Error: ${error}`);
-      });
-  }
-);
-
-//Get all users
-app.get(
-  "/allusers",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Users.find()
-      .then(users => {
-        res.status(201).json(users);
       })
       .catch(error => {
         console.error(error);
@@ -313,7 +368,7 @@ app.delete(
   }
 );
 
-//Delete A User by Username - Updated for mongoose
+//Delete A User by Username
 app.delete(
   "/users/:username",
   passport.authenticate("jwt", { session: false }),
