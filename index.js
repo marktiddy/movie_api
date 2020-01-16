@@ -404,4 +404,11 @@ app.get("/teapot", (req, res) => {
 });
 
 //Listen for requests
-app.listen(8080, () => console.log("server is up and running"));
+//Old local code
+//app.listen(8080, () => console.log("server is up and running"));
+
+//Heroku Code
+var port = process.env.PORT || 3000;
+app.listen(port, "0.0.0.0", function() {
+  console.log("Listening on Port 3000");
+});
