@@ -412,7 +412,7 @@ app.get("/allusers", (req, res) => {
       if (!users) {
         res.status(400).send("There are no users");
       } else {
-        res.status(201).json(users);
+        res.status(201).send(`Here are some users ${users}`);
       }
     })
     .catch(error => {
