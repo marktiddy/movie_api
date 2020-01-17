@@ -12,19 +12,19 @@ const { check, validationResult } = require("express-validator");
 //Set up cors for limited API access
 //var allowedOrigins = ["http://localhost:8080"];
 
-app.use(
-  cors({
-    origin: function(origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        //The domain isn't allowed
-        var message = `The CORS policy for this application doesn't allow access from origin ${origin}`;
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    }
-  })
-);
+// app.use(
+//   cors({
+//     origin: function(origin, callback) {
+//       if (!origin) return callback(null, true);
+//       if (allowedOrigins.indexOf(origin) === -1) {
+//         //The domain isn't allowed
+//         var message = `The CORS policy for this application doesn't allow access from origin ${origin}`;
+//         return callback(new Error(message), false);
+//       }
+//       return callback(null, true);
+//     }
+//   })
+// );
 
 //Sort out mongoose depreciation
 mongoose.set("useFindAndModify", false);
