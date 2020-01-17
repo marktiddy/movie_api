@@ -407,10 +407,14 @@ app.get("/teapot", (req, res) => {
 });
 
 app.get("/allusers", (req, res) => {
-  Users.find().then(user) => {
-    res.status(200).send(user)
-  }
-})
+  Users.find()
+    .then(user => {
+      res.status(200).send(user);
+    })
+    .catch(error => {
+      res.status(500).send(error);
+    });
+});
 
 //Listen for requests
 //Old local code
