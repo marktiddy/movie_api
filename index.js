@@ -226,7 +226,6 @@ app.post(
 );
 
 //Update a user info
-
 /*
 We'll expect a JSON in this format
 {
