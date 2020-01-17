@@ -406,21 +406,6 @@ app.get("/teapot", (req, res) => {
     );
 });
 
-app.get("/allusers", (req, res) => {
-  Users.find()
-    .then(users => {
-      if (!users) {
-        res.status(400).send("There are no users");
-      } else {
-        res.status(201).send(`Here are some users ${users}`);
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      res.status(400).send(`Error: ${error}`);
-    });
-});
-
 //Listen for requests
 //Old local code
 //app.listen(8080, () => console.log("server is up and running"));
