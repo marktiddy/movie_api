@@ -12,7 +12,7 @@ const { check, validationResult } = require("express-validator");
 //Set up cors for limited API access
 //var allowedOrigins = ["http://localhost:8080"];
 
-app.user(cors());
+app.use(cors());
 
 // app.use(
 //   cors({
