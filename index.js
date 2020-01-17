@@ -408,11 +408,16 @@ app.get("/teapot", (req, res) => {
 
 app.get("/allusers", (req, res) => {
   Users.find()
-    .then(user => {
-      res.status(200).send(user);
+    .then(users => {
+      if (!users) {
+        res.status(400).send("There are no users");
+      } else {
+        res.status(201).json(users);
+      }
     })
     .catch(error => {
-      res.status(500).send(error);
+      console.error(error);
+      res.status(400).send(`Error: ${error}`);
     });
 });
 
