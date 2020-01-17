@@ -225,7 +225,6 @@ app.post(
 
 //Update a user info
 
-//AT SOME POINT REFACTURE THIS TO A CATCH BLOCK
 /*
 We'll expect a JSON in this format
 {
@@ -406,6 +405,12 @@ app.get("/teapot", (req, res) => {
       "I'm a little teapot, short and stout. Here's my handle, here's my spout"
     );
 });
+
+app.get("/allusers", (req, res) => {
+  Users.find().then(user) => {
+    res.status(200).send(user)
+  }
+})
 
 //Listen for requests
 //Old local code
