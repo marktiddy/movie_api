@@ -182,7 +182,7 @@ app.post(
       ).isAlphanumeric(),
       check("Password", "Password is required")
         .not()
-        .isEmail(),
+        .isEmpty(),
       check("Email", "Email does not appear to be valid").isEmail()
     )
   ],
@@ -242,7 +242,7 @@ app.put(
   [
     check("Username", "Username is required").isLength({ min: 5 }),
     check(
-      "USername",
+      "Username",
       "Username contains non alphanumeric characters - not allowed"
     ).isAlphanumeric(),
     check("Password", "Password is required")
