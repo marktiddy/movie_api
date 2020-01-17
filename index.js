@@ -197,7 +197,7 @@ app.post(
     }
 
     //Hash the password
-    var hashedPassword = Users.hashedPassword(req.body.Password);
+    var hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({ Username: req.body.Username })
       .then(user => {
         if (user) {
