@@ -35,7 +35,8 @@ const Users = Models.User;
 
 //mongoose.connect("mongodb://localhost:27017/myFlixDB");
 mongoose.connect(
-  "mongodb+srv://myFlixDBadmin:jahJab-xedwud-hazki5@cluster0-lxob6.mongodb.net/test?retryWrites=true&w=majority"
+  "mongodb+srv://myFlixDBadmin:jahJab-xedwud-hazki5@cluster0-lxob6.mongodb.net/test?retryWrites=true&w=majority",
+  { useNewUrlParser: true }
 );
 
 //Get routing
