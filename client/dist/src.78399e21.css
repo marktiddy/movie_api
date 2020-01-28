@@ -1,3 +1,16 @@
+.welcome-text {
+  color: #0a61ff;
+  padding: 10px 0px 20px 0px;
+}
+body {
+  padding: 20px;
+}
+.movie-view {
+  padding: 20px;
+}
+.navigation-bar {
+  margin: -20px -20px 20px -20px;
+}
 .my-flix {
   color: steelblue;
 }
