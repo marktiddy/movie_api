@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
 
 //Import SCSS
 import "./login-view.scss";
@@ -10,11 +11,21 @@ export function LoginView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = () => {
-    console.log(username, password);
-    //TODO - API Request
-    //Call onLoggedIn which was passed in when this view was rendered in MainView
-    props.onLoggedIn(username);
+  const handleSubmit = event => {
+    event.preventDefault();
+    //Make our API request
+    axios
+      .post("http://mtiddy-myflix.herokuapp.com/login", {
+        Username: username,
+        Password: password
+      })
+      .then(response => {
+        const data = response.data;
+        props.onLoggedIn(data);
+      })
+      .catch(error => {
+        console.log("no such user");
+      });
   };
 
   return (

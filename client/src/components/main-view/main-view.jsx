@@ -11,6 +11,7 @@ import { RegistrationView } from "../registration-view/registration-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { Navigation } from "../nav-bar/nav-bar";
+import { MovieModal } from "../movie-modal/movie-modal";
 
 export class MainView extends React.Component {
   constructor() {
@@ -36,10 +37,28 @@ export class MainView extends React.Component {
   }
 
   //New Method to handle loggedin
-  onLoggedIn(user) {
+  onLoggedIn(authData) {
+    console.log(authData);
     this.setState({
-      user
+      user: authData.user.Username
     });
+
+    localStorage.setItem("token", authData.token);
+    localStorage.setItem("user", authData.user.Username);
+    this.getMovies(authData.token);
+  }
+
+  getMovies(token) {
+    axios
+      .get("http://mtiddy-myflix.herokuapp.com/movies", {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(response => {
+        this.setState({ movies: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   //Set up click function
@@ -114,5 +133,3 @@ export class MainView extends React.Component {
     );
   }
 }
-
-//http://mtiddy-myflix.herokuapp.com/movies

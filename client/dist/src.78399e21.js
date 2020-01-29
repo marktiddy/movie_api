@@ -48801,6 +48801,8 @@ var _Form = _interopRequireDefault(require("react-bootstrap/Form"));
 
 var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
+var _axios = _interopRequireDefault(require("axios"));
+
 require("./login-view.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -48828,11 +48830,18 @@ function LoginView(props) {
       password = _useState4[0],
       setPassword = _useState4[1];
 
-  var handleSubmit = function handleSubmit() {
-    console.log(username, password); //TODO - API Request
-    //Call onLoggedIn which was passed in when this view was rendered in MainView
+  var handleSubmit = function handleSubmit(event) {
+    event.preventDefault(); //Make our API request
 
-    props.onLoggedIn(username);
+    _axios.default.post("http://mtiddy-myflix.herokuapp.com/login", {
+      Username: username,
+      Password: password
+    }).then(function (response) {
+      var data = response.data;
+      props.onLoggedIn(data);
+    }).catch(function (error) {
+      console.log("no such user");
+    });
   };
 
   return _react.default.createElement("div", null, _react.default.createElement(_Form.default, null, _react.default.createElement(_Form.default.Group, {
@@ -48863,7 +48872,7 @@ LoginView.propTypes = {
   username: _propTypes.default.string.isRequired,
   password: _propTypes.default.string.isRequired
 };
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","./login-view.scss":"components/login-view/login-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","axios":"../node_modules/axios/index.js","./login-view.scss":"components/login-view/login-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -49219,7 +49228,120 @@ function Navigation() {
     href: "#"
   }, "MyFlix DB"));
 }
-},{"react":"../node_modules/react/index.js","react-bootstrap/Navbar":"../node_modules/react-bootstrap/esm/Navbar.js","./nav-bar.scss":"components/nav-bar/nav-bar.scss"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-bootstrap/Navbar":"../node_modules/react-bootstrap/esm/Navbar.js","./nav-bar.scss":"components/nav-bar/nav-bar.scss"}],"components/movie-modal/movie-modal.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MovieModal = MovieModal;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
+
+var _reactBootstrap = require("react-bootstrap");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//import SCSS
+//import "./movie-view.scss";
+function MovieModal() {
+  var _useState = useState(false),
+      _useState2 = _slicedToArray(_useState, 2),
+      show = _useState2[0],
+      setShow = _useState2[1];
+
+  var handleClose = function handleClose() {
+    return setShow(false);
+  };
+
+  var handleShow = function handleShow() {
+    return setShow(true);
+  };
+
+  console.log(props);
+  return _react.default.createElement("div", null, _react.default.createElement(_Button.default, {
+    variant: "primary",
+    onClick: handleShow
+  }, "Launch demo modal"), _react.default.createElement(Modal, {
+    show: show,
+    onHide: handleClose
+  }, _react.default.createElement(Modal.Header, {
+    closeButton: true
+  }, _react.default.createElement(Modal.Title, null, "Modal heading")), _react.default.createElement(Modal.Body, null, "Woohoo, you're reading this text in a modal!"), _react.default.createElement(Modal.Footer, null, _react.default.createElement(_Button.default, {
+    variant: "secondary",
+    onClick: handleClose
+  }, "Close"), _react.default.createElement(_Button.default, {
+    variant: "primary",
+    onClick: handleClose
+  }, "Save Changes"))));
+} // export class MovieModal extends React.Component {
+//   constructor() {
+//     super();
+//     this.state = {};
+//   }
+//   render() {
+//     const { movie, onClick } = this.props;
+//     if (!movie) return null;
+//     return (
+//       <div className="movie-view">
+//         console.log('modal running')
+//         <Modal.Dialog>
+//           <Modal.Header closeButton>
+//             <Modal.Title>{movie.Title}</Modal.Title>
+//           </Modal.Header>
+//           <Modal.Body></Modal.Body>
+//           <Container>
+//             <Row>
+//               <Col sm={4}>
+//                 <img className="movie-poster" src={movie.Imageurl} />
+//               </Col>
+//               <Col sm={8} className="movie-content">
+//                 <div className="movie-description">
+//                   <p className="value">
+//                     <i>{movie.Description}</i>
+//                   </p>
+//                 </div>
+//                 <div className="movie-genre">
+//                   <span className="label">
+//                     <b>Genre: </b>
+//                   </span>
+//                   <span className="value">{movie.Genre.Name}</span>
+//                 </div>
+//                 <div className="movie-director">
+//                   <span className="label">
+//                     <b>Director: </b>
+//                   </span>
+//                   <span className="value">{movie.Director.Name}</span>
+//                 </div>
+//                 <div className="back-button"></div>
+//               </Col>
+//             </Row>
+//           </Container>
+//           <Modal.Footer>
+//             <Button
+//               variant="danger"
+//               class="btn-danger"
+//               onClick={() => onClick(null)}
+//             >
+//               Close Movie Details
+//             </Button>
+//           </Modal.Footer>
+//         </Modal.Dialog>
+//       </div>
+//     );
+//   }
+// }
+},{"react":"../node_modules/react/index.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49244,6 +49366,8 @@ var _movieCard = require("../movie-card/movie-card");
 var _movieView = require("../movie-view/movie-view");
 
 var _navBar = require("../nav-bar/nav-bar");
+
+var _movieModal = require("../movie-modal/movie-modal");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49300,9 +49424,30 @@ function (_React$Component) {
 
   }, {
     key: "onLoggedIn",
-    value: function onLoggedIn(user) {
+    value: function onLoggedIn(authData) {
+      console.log(authData);
       this.setState({
-        user: user
+        user: authData.user.Username
+      });
+      localStorage.setItem("token", authData.token);
+      localStorage.setItem("user", authData.user.Username);
+      this.getMovies(authData.token);
+    }
+  }, {
+    key: "getMovies",
+    value: function getMovies(token) {
+      var _this3 = this;
+
+      _axios.default.get("http://mtiddy-myflix.herokuapp.com/movies", {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        _this3.setState({
+          movies: response.data
+        });
+      }).catch(function (error) {
+        console.log(error);
       });
     } //Set up click function
 
@@ -49316,7 +49461,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       //Remember square brackets because we're in JSX
       var _this$state = this.state,
@@ -49329,11 +49474,11 @@ function (_React$Component) {
           className: "main-view"
         }, _react.default.createElement(_navBar.Navigation, null), _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Row, null), _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, null, _react.default.createElement("h2", null, "Log In"), _react.default.createElement(_loginView.LoginView, {
           onLoggedIn: function onLoggedIn(user) {
-            return _this3.onLoggedIn(user);
+            return _this4.onLoggedIn(user);
           }
         })), _react.default.createElement(_reactBootstrap.Col, null, _react.default.createElement("h2", null, "Register a New User"), _react.default.createElement(_registrationView.RegistrationView, {
           onLoggedIn: function onLoggedIn(user) {
-            return _this3.onLoggedIn(user);
+            return _this4.onLoggedIn(user);
           }
         })))));
       } //Before the movies have been loaded
@@ -49352,7 +49497,7 @@ function (_React$Component) {
       }, _react.default.createElement(_navBar.Navigation, null), _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Row, null, selectedMovie ? _react.default.createElement(_movieView.MovieView, {
         movie: selectedMovie,
         onClick: function onClick(movie) {
-          return _this3.onMovieClick(null);
+          return _this4.onMovieClick(null);
         }
       }) : movies.map(function (movie) {
         return _react.default.createElement(_reactBootstrap.Col, {
@@ -49361,7 +49506,7 @@ function (_React$Component) {
           key: movie._id,
           movie: movie,
           onClick: function onClick(movie) {
-            return _this3.onMovieClick(movie);
+            return _this4.onMovieClick(movie);
           }
         }));
       }))));
@@ -49369,11 +49514,10 @@ function (_React$Component) {
   }]);
 
   return MainView;
-}(_react.default.Component); //http://mtiddy-myflix.herokuapp.com/movies
-
+}(_react.default.Component);
 
 exports.MainView = MainView;
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","./main-view.scss":"components/main-view/main-view.scss","../login-view/login-view":"components/login-view/login-view.jsx","../registration-view/registration-view":"components/registration-view/registration-view.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../nav-bar/nav-bar":"components/nav-bar/nav-bar.jsx"}],"index.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","./main-view.scss":"components/main-view/main-view.scss","../login-view/login-view":"components/login-view/login-view.jsx","../registration-view/registration-view":"components/registration-view/registration-view.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../nav-bar/nav-bar":"components/nav-bar/nav-bar.jsx","../movie-modal/movie-modal":"components/movie-modal/movie-modal.jsx"}],"index.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -49463,7 +49607,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61443" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52378" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
