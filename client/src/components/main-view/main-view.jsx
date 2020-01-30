@@ -16,6 +16,7 @@ import { MovieView } from "../movie-view/movie-view";
 import { DirectorView } from "../director-view/director-view";
 import { Navigation } from "../nav-bar/nav-bar";
 import { GenreView } from "../genre-view/genre-view";
+import { UserView } from "../user-view/user-view";
 
 export class MainView extends React.Component {
   constructor() {
@@ -145,6 +146,10 @@ export class MainView extends React.Component {
                     )}
                   />
                 )}
+              />
+              <Route
+                path="/profile/:user"
+                render={({ match }) => <UserView user={match.params.user} />}
               />
             </Row>
           </Container>

@@ -3,18 +3,31 @@ import PropTypes from "prop-types";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import axios from "axios";
 
-//Import SCSS
-import "./registration-view.scss";
-
-export function RegistrationView(props) {
-  const [username, setUsername] = useState(""),
+export function UserView(props) {
+  const [username, setUsername] = useState(props.user),
     [password, setPassword] = useState(""),
     [email, setEmail] = useState(""),
     [birthday, setBirthday] = useState("");
 
   const [validated, setValidated] = useState(false);
 
-  const handleSubmit = event => {
+  const deleteAccount = event => {
+    let token = localStorage.getItem("token");
+
+    axios
+      .delete(`http://mtiddy-myflix.herokuapp.com/users/${props.user}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then(response => {
+        console.log(response);
+        window.open("/logout", "_self");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const handleUpdate = event => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -22,11 +35,14 @@ export function RegistrationView(props) {
     }
 
     setValidated(true);
+    let token = localStorage.getItem("token");
+
     event.preventDefault();
 
     //Make the request using axios
     axios
-      .post("http://mtiddy-myflix.herokuapp.com/users", {
+      .put(`http://mtiddy-myflix.herokuapp.com/users/${props.user}`, {
+        headers: { Authorization: `Bearer ${token}` },
         Username: username,
         Password: password,
         Email: email,
@@ -35,33 +51,34 @@ export function RegistrationView(props) {
       .then(response => {
         const data = response.data;
         console.log(data);
-        window.open("/", "_self"); //self means it will open in the current tab
+        window.open("/", "_self");
       })
       .catch(error => {
-        console.log("error registering the user");
+        console.log(error);
       });
-
-    props.onLoggedIn(username);
   };
 
   return (
     <Container>
       <Row>
         <Col className="bg-danger text-light intro-box">
-          <h3>Welcome to MyFlix</h3>
+          <h3>Profile</h3>
           <p>
-            To register for a new account just fill in your details using the
-            form
+            To update your details just add the new details in the form and
+            press update or to delete your account use the button below
           </p>
+          <Button className="btn-light" onClick={deleteAccount}>
+            Delete Your Account
+          </Button>
         </Col>
         <Col>
-          <Form noValidate validated={validated} id="registration-form">
-            <Form.Group controlId="registerUsername">
+          <Form noValidate validated={validated} id="update-form">
+            <Form.Group controlId="updateUsername">
               <Form.Label>Choose a Username</Form.Label>
               <Form.Control
                 required
                 type="username"
-                placeholder="Username"
+                placeholder={props.user}
                 value={username}
                 onChange={e => setUsername(e.target.value)}
               />
@@ -70,7 +87,7 @@ export function RegistrationView(props) {
                 Please choose a username
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group controlId="registerEmail">
+            <Form.Group controlId="updateemail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 required
@@ -84,7 +101,7 @@ export function RegistrationView(props) {
                 Please enter an email address
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group controlId="registerPassword">
+            <Form.Group controlId="updatePassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
                 required
@@ -100,7 +117,7 @@ export function RegistrationView(props) {
 
               <Form.Text className="text-muted">Enter a new password</Form.Text>
             </Form.Group>
-            <Form.Group controlId="registerBirthday">
+            <Form.Group controlId="updateBirthday">
               <Form.Label>Date of Birth</Form.Label>
               <Form.Control
                 required
@@ -119,9 +136,9 @@ export function RegistrationView(props) {
               varient="primary"
               className="btn-danger"
               type="submit"
-              onClick={handleSubmit}
+              onClick={handleUpdate}
             >
-              Submit
+              Update Details
             </Button>
           </Form>
         </Col>
@@ -129,10 +146,3 @@ export function RegistrationView(props) {
     </Container>
   );
 }
-
-RegistrationView.propType = {
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  birthday: PropTypes.instanceOf(Date).isRequired
-};
