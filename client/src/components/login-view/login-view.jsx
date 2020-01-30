@@ -45,6 +45,10 @@ export function LoginView(props) {
           <Col className="bg-danger text-light intro-box">
             <h3>Welcome to MyFlix</h3>
             <p>Go ahead and log yourself in...</p>
+            <h6>Don't have an account yet?</h6>
+            <Button className="btn-light" href="/register">
+              Register
+            </Button>
           </Col>
           <Col>
             {" "}

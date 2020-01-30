@@ -8,6 +8,11 @@ export function Navigation(user) {
     <Navbar bg="danger" variant="dark" className="navigation-bar">
       <Navbar.Brand href="/">MyFlix DB</Navbar.Brand>
       <Navbar.Toggle />
+      <Navbar.Collapse className="text-light">
+        <a href="/" className="text-light">
+          Home
+        </a>
+      </Navbar.Collapse>
       <Navbar.Collapse className="justify-content-end">
         <Navbar.Text className="text-light">
           {user.user ? `Welcome ${user.user} |` : ""}{" "}

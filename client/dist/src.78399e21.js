@@ -51856,7 +51856,10 @@ function LoginView(props) {
 
   return _react.default.createElement("div", null, _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, {
     className: "bg-danger text-light intro-box"
-  }, _react.default.createElement("h3", null, "Welcome to MyFlix"), _react.default.createElement("p", null, "Go ahead and log yourself in...")), _react.default.createElement(_reactBootstrap.Col, null, " ", _react.default.createElement(_reactBootstrap.Form, {
+  }, _react.default.createElement("h3", null, "Welcome to MyFlix"), _react.default.createElement("p", null, "Go ahead and log yourself in..."), _react.default.createElement("h6", null, "Don't have an account yet?"), _react.default.createElement(_reactBootstrap.Button, {
+    className: "btn-light",
+    href: "/register"
+  }, "Register")), _react.default.createElement(_reactBootstrap.Col, null, " ", _react.default.createElement(_reactBootstrap.Form, {
     noValidate: true,
     validated: validated,
     id: "login-form"
@@ -52371,6 +52374,11 @@ function Navigation(user) {
   }, _react.default.createElement(_Navbar.default.Brand, {
     href: "/"
   }, "MyFlix DB"), _react.default.createElement(_Navbar.default.Toggle, null), _react.default.createElement(_Navbar.default.Collapse, {
+    className: "text-light"
+  }, _react.default.createElement("a", {
+    href: "/",
+    className: "text-light"
+  }, "Home")), _react.default.createElement(_Navbar.default.Collapse, {
     className: "justify-content-end"
   }, _react.default.createElement(_Navbar.default.Text, {
     className: "text-light"
@@ -52378,7 +52386,66 @@ function Navigation(user) {
     href: "/logout"
   }, "Log Out") : "")), " ");
 }
-},{"react":"../node_modules/react/index.js","react-bootstrap/Navbar":"../node_modules/react-bootstrap/esm/Navbar.js","./nav-bar.scss":"components/nav-bar/nav-bar.scss"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-bootstrap/Navbar":"../node_modules/react-bootstrap/esm/Navbar.js","./nav-bar.scss":"components/nav-bar/nav-bar.scss"}],"components/genre-view/genre-view.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/genre-view/genre-view.jsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GenreView = GenreView;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _reactBootstrap = require("react-bootstrap");
+
+var _movieCard = require("../movie-card/movie-card");
+
+var _reactRouterDom = require("react-router-dom");
+
+require("./genre-view.scss");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function GenreView(props) {
+  console.log(props);
+  var objectToReturn = [];
+  objectToReturn.push(_react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Row, {
+    className: "genre-row"
+  }, _react.default.createElement(_reactBootstrap.Col, null, _react.default.createElement("h3", null, props.genre, " Movies")), _react.default.createElement(_reactBootstrap.Col, {
+    sm: 2
+  }, _react.default.createElement(_reactRouterDom.Link, {
+    to: "/"
+  }, _react.default.createElement(_reactBootstrap.Button, {
+    varient: "primary",
+    className: "go-back btn-danger"
+  }, "Home"))))));
+
+  for (var i = 0; i < props.results.length; i++) {
+    if (props.results[i]) {
+      objectToReturn.push(_react.default.createElement(_reactBootstrap.Col, {
+        key: props.movies[i]._id
+      }, _react.default.createElement(_movieCard.MovieCard, {
+        key: props.movies[i]._id,
+        movie: props.movies[i]
+      })));
+    }
+  }
+
+  console.log(objectToReturn);
+  return objectToReturn;
+}
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./genre-view.scss":"components/genre-view/genre-view.scss"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52407,6 +52474,8 @@ var _movieView = require("../movie-view/movie-view");
 var _directorView = require("../director-view/director-view");
 
 var _navBar = require("../nav-bar/nav-bar");
+
+var _genreView = require("../genre-view/genre-view");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52564,11 +52633,20 @@ function (_React$Component) {
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/genres/:name",
-        render: /genre view/
-      }), _react.default.createElement(_reactRouterDom.Route, {
-        path: "/directors/:name",
         render: function render(_ref2) {
           var match = _ref2.match;
+          return _react.default.createElement(_genreView.GenreView, {
+            results: movies.map(function (m) {
+              return m.Genre.Name === match.params.name;
+            }),
+            movies: movies,
+            genre: match.params.name
+          });
+        }
+      }), _react.default.createElement(_reactRouterDom.Route, {
+        path: "/directors/:name",
+        render: function render(_ref3) {
+          var match = _ref3.match;
           return _react.default.createElement(_directorView.DirectorView, {
             movie: movies.find(function (m) {
               return m.Director.Name === match.params.name;
@@ -52583,7 +52661,7 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.MainView = MainView;
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","./main-view.scss":"components/main-view/main-view.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../login-view/login-view":"components/login-view/login-view.jsx","../registration-view/registration-view":"components/registration-view/registration-view.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../director-view/director-view":"components/director-view/director-view.jsx","../nav-bar/nav-bar":"components/nav-bar/nav-bar.jsx"}],"index.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","./main-view.scss":"components/main-view/main-view.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../login-view/login-view":"components/login-view/login-view.jsx","../registration-view/registration-view":"components/registration-view/registration-view.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../director-view/director-view":"components/director-view/director-view.jsx","../nav-bar/nav-bar":"components/nav-bar/nav-bar.jsx","../genre-view/genre-view":"components/genre-view/genre-view.jsx"}],"index.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);

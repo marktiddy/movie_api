@@ -15,6 +15,7 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { DirectorView } from "../director-view/director-view";
 import { Navigation } from "../nav-bar/nav-bar";
+import { GenreView } from "../genre-view/genre-view";
 
 export class MainView extends React.Component {
   constructor() {
@@ -122,7 +123,19 @@ export class MainView extends React.Component {
                   />
                 )}
               />
-              <Route path="/genres/:name" render={/genre view/} />
+              <Route
+                path="/genres/:name"
+                render={({ match }) => (
+                  <GenreView
+                    results={movies.map(
+                      m => m.Genre.Name === match.params.name
+                    )}
+                    movies={movies}
+                    genre={match.params.name}
+                  />
+                )}
+              />
+
               <Route
                 path="/directors/:name"
                 render={({ match }) => (
