@@ -5,13 +5,16 @@ import { Container, Row, Col } from "react-bootstrap";
 //import SCSS
 import "./movie-view.scss";
 
+//Import router
+import { Link } from "react-router-dom";
+
 export class MovieView extends React.Component {
   constructor() {
     super();
     this.state = {};
   }
   render() {
-    const { movie, onClick } = this.props;
+    const { movie } = this.props;
     if (!movie) return null;
 
     return (
@@ -31,26 +34,39 @@ export class MovieView extends React.Component {
                 </p>
               </div>
               <div className="movie-genre">
-                <span className="label">
-                  <b>Genre: </b>
-                </span>
-                <span className="value">{movie.Genre.Name}</span>
+                <Container className="details-container">
+                  <Row>
+                    <Col>
+                      <b>Genre: </b>
+                    </Col>
+                    <Col>
+                      <Link to={`/genres/${movie.Genre.Name}`}>
+                        <Button variant="outline-danger">
+                          {movie.Genre.Name}
+                        </Button>
+                      </Link>
+                    </Col>
+                    <Col>
+                      <b>Director: </b>
+                    </Col>
+                    <Col>
+                      <Link to={`/directors/${movie.Director.Name}`}>
+                        <Button variant="outline-danger">
+                          {movie.Director.Name}
+                        </Button>
+                      </Link>
+                    </Col>
+                  </Row>
+                </Container>
               </div>
-              <div className="movie-director">
-                <span className="label">
-                  <b>Director: </b>
-                </span>
-                <span className="value">{movie.Director.Name}</span>
-              </div>
+
               <div className="back-button">
                 <br />
-                <Button
-                  varient="primary"
-                  onClick={() => onClick(null)}
-                  className="go-back btn-danger"
-                >
-                  Go Back
-                </Button>
+                <Link to="/">
+                  <Button varient="primary" className="go-back btn-danger">
+                    Go Back
+                  </Button>
+                </Link>
               </div>
             </Col>
           </Row>

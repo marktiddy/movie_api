@@ -6,10 +6,13 @@ import Card from "react-bootstrap/Card";
 //Import SCSS
 import "./movie-card.scss";
 
+//Import the link method from react router
+import { Link } from "react-router-dom";
+
 export class MovieCard extends React.Component {
   render() {
     //The next data is given to MovieCard by your MainView component
-    const { movie, onClick } = this.props;
+    const { movie } = this.props;
 
     //The code below uses the onclick and means that when a user clicks the component the onclick is called
     return (
@@ -18,13 +21,11 @@ export class MovieCard extends React.Component {
         <Card.Body>
           <Card.Title>{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
-          <Button
-            onClick={() => onClick(movie)}
-            variant="primary"
-            className="btn-danger"
-          >
-            More Details
-          </Button>
+          <Link to={`/movies/${movie._id}`}>
+            <Button variant="primary" className="btn-danger">
+              More Details
+            </Button>
+          </Link>
         </Card.Body>
       </Card>
     );
@@ -46,6 +47,5 @@ MovieCard.propTypes = {
       Birth: PropTypes.string.isRequired,
       Bio: PropTypes.string
     })
-  }).isRequired,
-  onClick: PropTypes.func.isRequired
+  }).isRequired
 };
