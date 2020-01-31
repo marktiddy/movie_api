@@ -129,7 +129,7 @@ export class MainView extends React.Component {
                 path="/genres/:name"
                 render={({ match }) => (
                   <GenreView
-                    results={movies.map(
+                    results={movies.filter(
                       m => m.Genre.Name === match.params.name
                     )}
                     movies={movies}

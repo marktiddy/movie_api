@@ -52422,32 +52422,16 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function GenreView(props) {
-  console.log(props);
-  var objectToReturn = [];
-  objectToReturn.push(_react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Row, {
+  return _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Row, {
     className: "genre-row"
-  }, _react.default.createElement(_reactBootstrap.Col, null, _react.default.createElement("h3", null, props.genre, " Movies")), _react.default.createElement(_reactBootstrap.Col, {
-    sm: 2
-  }, _react.default.createElement(_reactRouterDom.Link, {
-    to: "/"
-  }, _react.default.createElement(_reactBootstrap.Button, {
-    varient: "primary",
-    className: "go-back btn-danger"
-  }, "Home"))))));
-
-  for (var i = 0; i < props.results.length; i++) {
-    if (props.results[i]) {
-      objectToReturn.push(_react.default.createElement(_reactBootstrap.Col, {
-        key: props.movies[i]._id
-      }, _react.default.createElement(_movieCard.MovieCard, {
-        key: props.movies[i]._id,
-        movie: props.movies[i]
-      })));
-    }
-  }
-
-  console.log(objectToReturn);
-  return objectToReturn;
+  }, _react.default.createElement(_reactBootstrap.Col, null, _react.default.createElement("h3", null, props.genre, " Movies"))), _react.default.createElement(_reactBootstrap.Row, null, props.results.map(function (m) {
+    return _react.default.createElement(_reactBootstrap.Col, {
+      key: m._id
+    }, _react.default.createElement(_movieCard.MovieCard, {
+      key: m._id,
+      movie: m
+    }));
+  })));
 }
 },{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./genre-view.scss":"components/genre-view/genre-view.scss"}],"components/user-view/user-view.jsx":[function(require,module,exports) {
 "use strict";
@@ -52812,7 +52796,7 @@ function (_React$Component) {
         render: function render(_ref2) {
           var match = _ref2.match;
           return _react.default.createElement(_genreView.GenreView, {
-            results: movies.map(function (m) {
+            results: movies.filter(function (m) {
               return m.Genre.Name === match.params.name;
             }),
             movies: movies,
