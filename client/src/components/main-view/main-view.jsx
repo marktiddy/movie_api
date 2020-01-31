@@ -55,6 +55,7 @@ export class MainView extends React.Component {
         user: localStorage.getItem("user")
       });
       this.getMovies(accessToken);
+      console.log("component mounted here is" + this.state.user);
     }
   }
 

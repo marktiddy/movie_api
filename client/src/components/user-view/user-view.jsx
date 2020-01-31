@@ -36,21 +36,35 @@ export function UserView(props) {
 
     setValidated(true);
     let token = localStorage.getItem("token");
+    console.log(token);
 
     event.preventDefault();
 
+    var postData = {
+      Username: username,
+      Password: password,
+      Email: email,
+      Birthday: birthday
+    };
+
+    let axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+
     //Make the request using axios
     axios
-      .put(`http://mtiddy-myflix.herokuapp.com/users/${props.user}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday
-      })
+      .put(
+        `http://mtiddy-myflix.herokuapp.com/users/${props.user}`,
+        postData,
+        axiosConfig
+      )
       .then(response => {
         const data = response.data;
         console.log(data);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         window.open("/", "_self");
       })
       .catch(error => {

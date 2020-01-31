@@ -52527,19 +52527,25 @@ function UserView(props) {
 
     setValidated(true);
     var token = localStorage.getItem("token");
-    event.preventDefault(); //Make the request using axios
-
-    _axios.default.put("http://mtiddy-myflix.herokuapp.com/users/".concat(props.user), {
-      headers: {
-        Authorization: "Bearer ".concat(token)
-      },
+    console.log(token);
+    event.preventDefault();
+    var postData = {
       Username: username,
       Password: password,
       Email: email,
       Birthday: birthday
-    }).then(function (response) {
+    };
+    var axiosConfig = {
+      headers: {
+        Authorization: "Bearer ".concat(token)
+      }
+    }; //Make the request using axios
+
+    _axios.default.put("http://mtiddy-myflix.herokuapp.com/users/".concat(props.user), postData, axiosConfig).then(function (response) {
       var data = response.data;
       console.log(data);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       window.open("/", "_self");
     }).catch(function (error) {
       console.log(error);
@@ -52725,6 +52731,7 @@ function (_React$Component) {
           user: localStorage.getItem("user")
         });
         this.getMovies(accessToken);
+        console.log("component mounted here is" + this.state.user);
       }
     } //New Method to handle loggedin
 
@@ -52930,7 +52937,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64971" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59589" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
