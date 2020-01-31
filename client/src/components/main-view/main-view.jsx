@@ -2,27 +2,33 @@ import React from "react";
 import axios from "axios";
 import { Container, Row, Col, Button } from "react-bootstrap";
 
+//import from REDUX
+import { connect } from "react-redux";
+
 //Import SCSS
 import "./main-view.scss";
 
 //Set up the router
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+//import our actions
+import { setMovies } from "../../actions/actions";
+
 //Import the movie card and login view
+import { MoviesList } from "../movies-list/movies-list";
 import { LoginView } from "../login-view/login-view";
 import { RegistrationView } from "../registration-view/registration-view";
-import { MovieCard } from "../movie-card/movie-card";
+//import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { DirectorView } from "../director-view/director-view";
 import { Navigation } from "../nav-bar/nav-bar";
 import { GenreView } from "../genre-view/genre-view";
 import { UserView } from "../user-view/user-view";
 
-export class MainView extends React.Component {
+class MainView extends React.Component {
   constructor() {
     super();
     this.state = {
-      movies: [],
       user: null
     };
   }
@@ -41,7 +47,7 @@ export class MainView extends React.Component {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
-        this.setState({ movies: response.data });
+        this.props.setMovies(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -55,7 +61,6 @@ export class MainView extends React.Component {
         user: localStorage.getItem("user")
       });
       this.getMovies(accessToken);
-      console.log("component mounted here is" + this.state.user);
     }
   }
 
@@ -73,8 +78,8 @@ export class MainView extends React.Component {
 
   render() {
     //Remember square brackets because we're in JSX
-    const { movies, user } = this.state;
-
+    let { movies } = this.props;
+    let { user } = this.state;
     //Before the movies have been loaded
     if (!movies) {
       return (
@@ -101,11 +106,7 @@ export class MainView extends React.Component {
                       <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
                     );
 
-                  return movies.map(m => (
-                    <Col key={m._id}>
-                      <MovieCard key={m._id} movie={m} />
-                    </Col>
-                  ));
+                  return <MoviesList movies={movies} />;
                 }}
               />
 
@@ -159,3 +160,10 @@ export class MainView extends React.Component {
     );
   }
 }
+
+//New Redux code
+let mapStateToProps = state => {
+  return { movies: state.movies };
+};
+
+export default connect(mapStateToProps, { setMovies })(MainView);
