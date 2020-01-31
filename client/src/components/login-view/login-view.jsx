@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import axios from "axios";
+import ReactDOM from "react-dom";
 
 //Import SCSS
 import "./login-view.scss";
@@ -35,6 +36,15 @@ export function LoginView(props) {
       })
       .catch(error => {
         console.log("no such user");
+        const errorMsg = (
+          <div>
+            <p>
+              <br />
+              Error: Username or Password are incorrect
+            </p>
+          </div>
+        );
+        ReactDOM.render(errorMsg, document.getElementById("error-report"));
       });
   };
 
@@ -89,6 +99,10 @@ export function LoginView(props) {
               </Button>
             </Form>
           </Col>
+        </Row>
+        <Row>
+          <Col></Col>
+          <Col id="error-report" className="text-danger"></Col>
         </Row>
       </Container>
     </div>

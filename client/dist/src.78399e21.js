@@ -51799,6 +51799,8 @@ var _reactBootstrap = require("react-bootstrap");
 
 var _axios = _interopRequireDefault(require("axios"));
 
+var _reactDom = _interopRequireDefault(require("react-dom"));
+
 require("./login-view.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -51851,6 +51853,10 @@ function LoginView(props) {
       props.onLoggedIn(data);
     }).catch(function (error) {
       console.log("no such user");
+
+      var errorMsg = _react.default.createElement("div", null, _react.default.createElement("p", null, _react.default.createElement("br", null), "Error: Username or Password are incorrect"));
+
+      _reactDom.default.render(errorMsg, document.getElementById("error-report"));
     });
   };
 
@@ -51890,14 +51896,17 @@ function LoginView(props) {
     className: "btn-danger",
     type: "submit",
     onClick: handleSubmit
-  }, "Submit"))))));
+  }, "Submit")))), _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactBootstrap.Col, null), _react.default.createElement(_reactBootstrap.Col, {
+    id: "error-report",
+    className: "text-danger"
+  }))));
 }
 
 LoginView.propTypes = {
   username: _propTypes.default.string.isRequired,
   password: _propTypes.default.string.isRequired
 };
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","axios":"../node_modules/axios/index.js","./login-view.scss":"components/login-view/login-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","axios":"../node_modules/axios/index.js","react-dom":"../node_modules/react-dom/index.js","./login-view.scss":"components/login-view/login-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
