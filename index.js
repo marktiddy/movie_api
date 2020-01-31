@@ -276,14 +276,16 @@ app.put(
       .then(function(error, updatedUser) {
         if (error) {
           console.error(error);
-          res.status(500).send(`Error: ${error}`);
+          res
+            .status(500)
+            .send(`Error has happened with the find one and update: ${error}`);
         } else {
           res.json(updatedUser);
         }
       })
       .catch(error => {
         console.error(error);
-        res.status(500).send(`Error: ${error}`);
+        res.status(500).send(`Error happened with the put method: ${error}`);
       });
   }
 );

@@ -52529,15 +52529,19 @@ function UserView(props) {
     var token = localStorage.getItem("token");
     event.preventDefault(); //Make the request using axios
 
-    _axios.default.put("http://mtiddy-myflix.herokuapp.com/users/".concat(props.user), {
-      headers: {
-        Authorization: "Bearer ".concat(token)
-      },
+    var postData = {
       Username: username,
       Password: password,
       Email: email,
       Birthday: birthday
-    }).then(function (response) {
+    };
+    var axiosConfig = {
+      headers: {
+        Authorization: "Bearer ".concat(token)
+      }
+    };
+
+    _axios.default.put("http://mtiddy-myflix.herokuapp.com/users/".concat(props.user), postData, axiosConfig).then(function (response) {
       var data = response.data;
       console.log(data);
       window.open("/", "_self");
@@ -52931,7 +52935,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58058" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60613" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

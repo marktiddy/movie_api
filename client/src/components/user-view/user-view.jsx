@@ -40,14 +40,25 @@ export function UserView(props) {
     event.preventDefault();
 
     //Make the request using axios
+    var postData = {
+      Username: username,
+      Password: password,
+      Email: email,
+      Birthday: birthday
+    };
+
+    let axiosConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+
     axios
-      .put(`http://mtiddy-myflix.herokuapp.com/users/${props.user}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday
-      })
+      .put(
+        `http://mtiddy-myflix.herokuapp.com/users/${props.user}`,
+        postData,
+        axiosConfig
+      )
       .then(response => {
         const data = response.data;
         console.log(data);
