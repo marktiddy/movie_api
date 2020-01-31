@@ -65,7 +65,7 @@ export function UserView(props) {
         window.open("/", "_self");
       })
       .catch(error => {
-        console.log(error);
+        console.log(`error happened locally ${error}`);
       });
   };
 
