@@ -54952,25 +54952,19 @@ function UserView(props) {
 
     setValidated(true);
     var token = localStorage.getItem("token");
-    console.log(token);
-    event.preventDefault();
-    var postData = {
+    event.preventDefault(); //Make the request using axios
+
+    _axios.default.put("http://mtiddy-myflix.herokuapp.com/users/".concat(props.user), {
+      headers: {
+        Authorization: "Bearer ".concat(token)
+      },
       Username: username,
       Password: password,
       Email: email,
       Birthday: birthday
-    };
-    var axiosConfig = {
-      headers: {
-        Authorization: "Bearer ".concat(token)
-      }
-    }; //Make the request using axios
-
-    _axios.default.put("http://mtiddy-myflix.herokuapp.com/users/".concat(props.user), postData, axiosConfig).then(function (response) {
+    }).then(function (response) {
       var data = response.data;
       console.log(data);
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
       window.open("/", "_self");
     }).catch(function (error) {
       console.log(error);
