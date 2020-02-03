@@ -3,6 +3,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { MovieCard } from "../movie-card/movie-card";
 
+//import our action
+import { setFilter } from "../../actions/actions";
+
 //Import visibility filter component
 import VisibilityFilterInput from "../visibility-filter-input/visibility-filter-input";
 
@@ -16,6 +19,8 @@ const mapStateToProps = state => {
 };
 
 export function MoviesList(props) {
+  const testingMyfilter = setFilter("");
+  console.log(testingMyfilter);
   const { movies, visibilityFilter } = props;
   let filteredMovies = movies;
 
@@ -25,16 +30,26 @@ export function MoviesList(props) {
 
   if (!movies) return <div className="main-view" />;
   console.log(visibilityFilter);
-  return filteredMovies.map(m => (
+
+  // return filteredMovies.map(m => (
+  //   <div className="movies-list">
+  //     <VisibilityFilterInput visibilityFilter={visibilityFilter} />
+  //     {filteredMovies.map(m => (
+  //       <Col key={m._id}>
+  //         <MovieCard key={m._id} movie={m} />
+  //       </Col>
+  //     ))}
+  //   </div>
+  // ));
+
+  return (
     <div className="movies-list">
-      <VisibilityFilterInput visibilityFilter={visibilityFilter} />
+      <VisibilityFilterInput visibility={visibilityFilter} />
       {filteredMovies.map(m => (
-        <Col key={m._id}>
-          <MovieCard key={m._id} movie={m} />
-        </Col>
+        <Col key={m._id} movie={m} />
       ))}
     </div>
-  ));
+  );
 }
 
 //Lets say we want to subscribe to updates to movies and access the visibility filter action

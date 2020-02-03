@@ -55045,10 +55045,13 @@ var _reactRedux = require("react-redux");
 
 var _movieCard = require("../movie-card/movie-card");
 
+var _actions = require("../../actions/actions");
+
 var _visibilityFilterInput = _interopRequireDefault(require("../visibility-filter-input/visibility-filter-input"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//import our action
 //Import visibility filter component
 //This function takes an input of state and returns the visibility filter as the state.
 //This means the props for MoviesList contains the visibilityFilter action and the movies which was
@@ -55062,6 +55065,8 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 function MoviesList(props) {
+  var testingMyfilter = (0, _actions.setFilter)("");
+  console.log(testingMyfilter);
   var movies = props.movies,
       visibilityFilter = props.visibilityFilter;
   var filteredMovies = movies;
@@ -55075,28 +55080,34 @@ function MoviesList(props) {
   if (!movies) return _react.default.createElement("div", {
     className: "main-view"
   });
-  console.log(visibilityFilter);
-  return filteredMovies.map(function (m) {
-    return _react.default.createElement("div", {
-      className: "movies-list"
-    }, _react.default.createElement(_visibilityFilterInput.default, {
-      visibilityFilter: visibilityFilter
-    }), filteredMovies.map(function (m) {
-      return _react.default.createElement(_reactBootstrap.Col, {
-        key: m._id
-      }, _react.default.createElement(_movieCard.MovieCard, {
-        key: m._id,
-        movie: m
-      }));
-    }));
-  });
+  console.log(visibilityFilter); // return filteredMovies.map(m => (
+  //   <div className="movies-list">
+  //     <VisibilityFilterInput visibilityFilter={visibilityFilter} />
+  //     {filteredMovies.map(m => (
+  //       <Col key={m._id}>
+  //         <MovieCard key={m._id} movie={m} />
+  //       </Col>
+  //     ))}
+  //   </div>
+  // ));
+
+  return _react.default.createElement("div", {
+    className: "movies-list"
+  }, _react.default.createElement(_visibilityFilterInput.default, {
+    visibility: visibilityFilter
+  }), filteredMovies.map(function (m) {
+    return _react.default.createElement(_reactBootstrap.Col, {
+      key: m._id,
+      movie: m
+    });
+  }));
 } //Lets say we want to subscribe to updates to movies and access the visibility filter action
 
 
 var _default = (0, _reactRedux.connect)(mapStateToProps)(MoviesList);
 
 exports.default = _default;
-},{"react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../visibility-filter-input/visibility-filter-input":"components/visibility-filter-input/visibility-filter-input.jsx"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
+},{"react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../../actions/actions":"actions/actions.js","../visibility-filter-input/visibility-filter-input":"components/visibility-filter-input/visibility-filter-input.jsx"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
