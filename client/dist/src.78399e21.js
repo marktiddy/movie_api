@@ -54997,7 +54997,6 @@ function UserView(props) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.VisibilityFilterInput = VisibilityFilterInput;
 exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
@@ -55006,15 +55005,14 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _reactRedux = require("react-redux");
 
-var _Form = require("react-bootstrap/Form");
+var _Form = _interopRequireDefault(require("react-bootstrap/Form"));
 
 var _actions = require("../../actions/actions");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function VisibilityFilterInput(props) {
-  console.log("these are the props" + props.visibilityFilter);
-  return _react.default.createElement(_Form.Form.Control, {
+  return _react.default.createElement(_Form.default.Control, {
     onChange: function onChange(e) {
       return props.setFilter(e.target.value);
     },
@@ -55043,21 +55041,18 @@ var _react = _interopRequireDefault(require("react"));
 
 var _reactRedux = require("react-redux");
 
-var _movieCard = require("../movie-card/movie-card");
-
-var _actions = require("../../actions/actions");
-
 var _visibilityFilterInput = _interopRequireDefault(require("../visibility-filter-input/visibility-filter-input"));
+
+var _movieCard = require("../movie-card/movie-card");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import our action
 //Import visibility filter component
 //This function takes an input of state and returns the visibility filter as the state.
 //This means the props for MoviesList contains the visibilityFilter action and the movies which was
 //passed when the MainView component rendered this component. This means you can filter
 //The movies array based on the value present in visibilityFilter
-var mapStateToProps = function mapStateToProps(state) {
+var mapState = function mapState(state) {
   var visibilityFilter = state.visibilityFilter;
   return {
     visibilityFilter: visibilityFilter
@@ -55065,8 +55060,6 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 function MoviesList(props) {
-  var testingMyfilter = (0, _actions.setFilter)("");
-  console.log(testingMyfilter);
   var movies = props.movies,
       visibilityFilter = props.visibilityFilter;
   var filteredMovies = movies;
@@ -55080,34 +55073,25 @@ function MoviesList(props) {
   if (!movies) return _react.default.createElement("div", {
     className: "main-view"
   });
-  console.log(visibilityFilter); // return filteredMovies.map(m => (
-  //   <div className="movies-list">
-  //     <VisibilityFilterInput visibilityFilter={visibilityFilter} />
-  //     {filteredMovies.map(m => (
-  //       <Col key={m._id}>
-  //         <MovieCard key={m._id} movie={m} />
-  //       </Col>
-  //     ))}
-  //   </div>
-  // ));
-
   return _react.default.createElement("div", {
     className: "movies-list"
-  }, _react.default.createElement(_visibilityFilterInput.default, {
-    visibility: visibilityFilter
-  }), filteredMovies.map(function (m) {
+  }, _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_visibilityFilterInput.default, {
+    visibilityFilter: visibilityFilter
+  })), _react.default.createElement(_reactBootstrap.Row, null, filteredMovies.map(function (m) {
     return _react.default.createElement(_reactBootstrap.Col, {
+      key: m._id
+    }, _react.default.createElement(_movieCard.MovieCard, {
       key: m._id,
       movie: m
-    });
-  }));
+    }));
+  })));
 } //Lets say we want to subscribe to updates to movies and access the visibility filter action
 
 
-var _default = (0, _reactRedux.connect)(mapStateToProps)(MoviesList);
+var _default = (0, _reactRedux.connect)(mapState)(MoviesList);
 
 exports.default = _default;
-},{"react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../../actions/actions":"actions/actions.js","../visibility-filter-input/visibility-filter-input":"components/visibility-filter-input/visibility-filter-input.jsx"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
+},{"react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","../visibility-filter-input/visibility-filter-input":"components/visibility-filter-input/visibility-filter-input.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55249,15 +55233,15 @@ function (_React$Component) {
         className: "main-view"
       }, _react.default.createElement(_navBar.Navigation, {
         user: user
-      }), _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_reactRouterDom.Route, {
+      }), _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactRouterDom.Route, {
         exact: true,
         path: "/",
         render: function render() {
-          if (!user) return _react.default.createElement(_loginView.LoginView, {
+          if (!user) return _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_loginView.LoginView, {
             onLoggedIn: function onLoggedIn(user) {
               return _this3.onLoggedIn(user);
             }
-          });
+          }));
           return _react.default.createElement(_moviesList.MoviesList, {
             movies: movies
           });
@@ -55265,7 +55249,7 @@ function (_React$Component) {
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/register",
         render: function render() {
-          return _react.default.createElement(_registrationView.RegistrationView, null);
+          return _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_registrationView.RegistrationView, null));
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/logout",
@@ -55278,43 +55262,43 @@ function (_React$Component) {
         path: "/movies/:movieId",
         render: function render(_ref) {
           var match = _ref.match;
-          return _react.default.createElement(_movieView.MovieView, {
+          return _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_movieView.MovieView, {
             movie: movies.find(function (m) {
               return m._id === match.params.movieId;
             })
-          });
+          }));
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/genres/:name",
         render: function render(_ref2) {
           var match = _ref2.match;
-          return _react.default.createElement(_genreView.GenreView, {
+          return _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_genreView.GenreView, {
             results: movies.filter(function (m) {
               return m.Genre.Name === match.params.name;
             }),
             movies: movies,
             genre: match.params.name
-          });
+          }));
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/directors/:name",
         render: function render(_ref3) {
           var match = _ref3.match;
-          return _react.default.createElement(_directorView.DirectorView, {
+          return _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_directorView.DirectorView, {
             movie: movies.find(function (m) {
               return m.Director.Name === match.params.name;
             })
-          });
+          }));
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/profile/:user",
         render: function render(_ref4) {
           var match = _ref4.match;
-          return _react.default.createElement(_userView.UserView, {
+          return _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_userView.UserView, {
             user: match.params.user
-          });
+          }));
         }
-      })))));
+      }))));
     }
   }]);
 
@@ -55435,7 +55419,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61931" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53650" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
