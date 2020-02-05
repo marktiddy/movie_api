@@ -63,6 +63,7 @@ export function UserView(props) {
         const data = response.data;
         console.log(data);
         window.open("/", "_self");
+        console.log("the response ran");
       })
       .catch(error => {
         console.log(`error happened locally ${error}`);
