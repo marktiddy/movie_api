@@ -277,7 +277,7 @@ app.put(
         if (error) {
           console.error(error);
           res
-            .status(500)
+            .status(502)
             .send(`Error has happened with the find one and update: ${error}`);
         } else {
           res.json(updatedUser);
