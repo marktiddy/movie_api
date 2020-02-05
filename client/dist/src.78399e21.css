@@ -9,9 +9,6 @@
 .intro-box {
   padding: 20px;
 }
-body {
-  padding: 20px;
-}
 .movie-view {
   padding: 20px;
 }
@@ -22,6 +19,9 @@ body {
 }
 .navigation-bar {
   margin: -20px -20px 20px -20px;
+}
+body {
+  padding: 20px;
 }
 .genre-row {
   padding: 10px;

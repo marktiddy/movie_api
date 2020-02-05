@@ -16,7 +16,6 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 //Import the movie card and login view
 import { LoginView } from "../login-view/login-view";
 import { RegistrationView } from "../registration-view/registration-view";
-import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { DirectorView } from "../director-view/director-view";
 import { Navigation } from "../nav-bar/nav-bar";
