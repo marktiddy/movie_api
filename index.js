@@ -34,7 +34,7 @@ mongoose.set("useFindAndModify", false);
 //Constants for Models
 const Movies = Models.Movie;
 const Users = Models.User;
-
+//extra
 //mongoose.connect("mongodb://localhost:27017/myFlixDB");
 mongoose.connect(
   "mongodb+srv://myFlixDBadmin:EM1ayokPBHgTrhBV@cluster0-lxob6.mongodb.net/myFlixDB?retryWrites=true&w=majority",
@@ -266,21 +266,22 @@ app.put(
       {
         $set: {
           Username: req.body.Username,
-          Password: hasedPassword,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday
         }
       },
       { new: true }
     )
-      .then(function(error, updatedUser) {
-        if (error) {
-          console.error(error);
+      .then(updatedUser => {
+        if (!updatedUser) {
           res
             .status(500)
-            .send(`Error has happened with the find one and update: ${error}`);
+            .send(
+              `Error has happened with the find one and update feature: ${error}`
+            );
         } else {
-          res.json(updatedUser);
+          res.status(201).json(updatedUser);
         }
       })
       .catch(error => {
