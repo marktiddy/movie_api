@@ -21,7 +21,7 @@ import { DirectorView } from "../director-view/director-view";
 import { Navigation } from "../nav-bar/nav-bar";
 import { GenreView } from "../genre-view/genre-view";
 import { UserView } from "../user-view/user-view";
-import { MoviesList } from "../movies-list/movies-list";
+import MoviesList from "../movies-list/movies-list";
 
 class MainView extends React.Component {
   constructor() {
