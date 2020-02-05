@@ -291,6 +291,10 @@ app.put(
   }
 );
 
+app.get("/randomfunction") {
+  console.log('hello')
+}
+
 //Get user by username - Mongoose
 app.get(
   "/users/:Username",
