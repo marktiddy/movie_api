@@ -35,11 +35,11 @@ mongoose.set("useFindAndModify", false);
 const Movies = Models.Movie;
 const Users = Models.User;
 
-//mongoose.connect("mongodb://localhost:27017/myFlixDB");
-mongoose.connect(
-  "mongodb+srv://myFlixDBadmin:EM1ayokPBHgTrhBV@cluster0-lxob6.mongodb.net/myFlixDB?retryWrites=true&w=majority",
-  { useNewUrlParser: true }
-);
+mongoose.connect("mongodb://localhost:27017/myFlixDB");
+// mongoose.connect(
+//   "mongodb+srv://myFlixDBadmin:EM1ayokPBHgTrhBV@cluster0-lxob6.mongodb.net/myFlixDB?retryWrites=true&w=majority",
+//   { useNewUrlParser: true }
+// );
 
 //Get routing
 //Set up static
@@ -273,19 +273,18 @@ app.put(
       },
       { new: true }
     )
-      .then(function(error, updatedUser) {
-        if (error) {
-          console.error(error);
+      .then(updatedUser => {
+        if (!updatedUser) {
           res
-            .status(502)
+            .status(500)
             .send(`Error has happened with the find one and update: ${error}`);
         } else {
-          res.json(updatedUser);
+          res.status(201).json(updatedUser);
         }
       })
       .catch(error => {
         console.error(error);
-        res.status(418).send(`Error happened with the put method: ${error}`);
+        res.status(500).send(`Error happened with the put method: ${error}`);
       });
   }
 );
