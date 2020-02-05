@@ -285,7 +285,7 @@ app.put(
       })
       .catch(error => {
         console.error(error);
-        res.status(500).send(`Error happened with the put method: ${error}`);
+        res.status(418).send(`Error happened with the put method: ${error}`);
       });
   }
 );
