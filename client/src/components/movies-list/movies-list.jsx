@@ -1,15 +1,12 @@
 import React from "react";
+import { Col, Row } from "react-bootstrap";
 import { connect } from "react-redux";
-//import { Container, Row, Col, Button } from "react-bootstrap";
 
+//Import visibility filter component
+import VisibilityFilterInput from "../visibility-filter-input/visibility-filter-input";
 import { MovieCard } from "../movie-card/movie-card";
 
-const mapStateToProps = state => {
-  const { visibilityFilter } = state;
-  return { visibilityFilter };
-};
-
-function MoviesList(props) {
+export function MoviesList(props) {
   const { movies, visibilityFilter } = props;
   let filteredMovies = movies;
 
@@ -17,9 +14,28 @@ function MoviesList(props) {
     filteredMovies = movies.filter(m => m.Title.includes(visibilityFilter));
   }
 
-  if (!movies) return <div className="main-view">Hello world</div>;
+  if (!movies) return <div className="main-view" />;
 
-  return filteredMovies.map(m => <MovieCard key={m._id} movie={m} />);
+  return (
+    <div className="movies-list">
+      <Row>
+        <VisibilityFilterInput visibilityFilter={visibilityFilter} />
+      </Row>
+      <Row>
+        {filteredMovies.map(m => (
+          <Col key={m._id}>
+            <MovieCard key={m._id} movie={m} />
+          </Col>
+        ))}
+      </Row>
+    </div>
+  );
 }
+
+//Lets say we want to subscribe to updates to movies and access the visibility filter action
+const mapStateToProps = state => {
+  const { visibilityFilter } = state;
+  return { visibilityFilter };
+};
 
 export default connect(mapStateToProps)(MoviesList);

@@ -1,16 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import rootReducer from "./reducers/reducers";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 //import our mainView class
-import { MainView } from "./components/main-view/main-view";
+import MainView from "./components/main-view/main-view";
 
 //Import statement to say you need to bundle the SCSS code
 import "./index.scss";
-
 //Main component which will use all the others
 class MyFlixApplication extends React.Component {
   render() {
-    return <MainView />;
+    return (
+      <Provider store={store}>
+        <MainView />
+      </Provider>
+    );
   }
 }
 
