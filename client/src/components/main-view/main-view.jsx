@@ -5,7 +5,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 //Import react redux stuff
 import { connect } from "react-redux";
 //Import our action
-import { setMovies } from "../../actions/actions";
+import { setMovies, setUser } from "../../actions/actions";
 
 //Import SCSS
 import "./main-view.scss";
@@ -26,9 +26,6 @@ import MoviesList from "../movies-list/movies-list";
 class MainView extends React.Component {
   constructor() {
     super();
-    this.state = {
-      user: null
-    };
   }
 
   componentDidMount() {
@@ -44,11 +41,7 @@ class MainView extends React.Component {
   logOutUser() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    if (this.user) {
-      this.setState({
-        user: null
-      });
-    }
+    this.props.setUser("");
   }
 
   getMovies(token) {
@@ -66,9 +59,8 @@ class MainView extends React.Component {
 
   //New Method to handle loggedin
   onLoggedIn(authData) {
-    this.setState({
-      user: authData.user.Username
-    });
+    this.props.setUser(authData.user.Username);
+
     localStorage.setItem("token", authData.token);
     localStorage.setItem("user", authData.user.Username);
     this.getMovies(authData.token);
@@ -78,8 +70,8 @@ class MainView extends React.Component {
   render() {
     //Get our movies from our props
     let { movies } = this.props;
-    //Get user from the state
-    let { user } = this.state;
+    //Get user from the props
+    let { user } = this.props;
 
     //New code below for the router
     return (
@@ -91,12 +83,14 @@ class MainView extends React.Component {
               exact
               path="/"
               render={() => {
-                if (!user)
+                if (user === "") {
                   return (
                     <Row>
                       <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
                     </Row>
                   );
+                }
+
                 return <MoviesList movies={movies} />;
               }}
             />
@@ -170,7 +164,7 @@ class MainView extends React.Component {
 //Make sure we subscribe to the store for updates to movies
 //We say that the movies property of this component is the movies from our state (store)
 let mapStateToProps = state => {
-  return { movies: state.movies };
+  return { movies: state.movies, user: state.user };
 };
 //This is what extracts the movies from the state and we pass it as the movies prop in main view
-export default connect(mapStateToProps, { setMovies })(MainView);
+export default connect(mapStateToProps, { setMovies, setUser })(MainView);

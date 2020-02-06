@@ -37,11 +37,15 @@ export class DirectorView extends React.Component {
 
               <div className="back-button">
                 <br />
-                <Link to="/">
-                  <Button varient="primary" className="go-back btn-danger">
-                    Close
-                  </Button>
-                </Link>
+                <Button
+                  variant="primary"
+                  className="btn-danger"
+                  onClick={() => {
+                    window.history.back();
+                  }}
+                >
+                  Go Back
+                </Button>
               </div>
             </Col>
           </Row>

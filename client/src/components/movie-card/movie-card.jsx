@@ -17,7 +17,10 @@ export class MovieCard extends React.Component {
     //The code below uses the onclick and means that when a user clicks the component the onclick is called
     return (
       <Card style={{ width: "13rem" }} key={movie._id}>
-        <Card.Img variant="top" src={movie.Imageurl} />
+        <Link to={`/movies/${movie._id}`}>
+          {" "}
+          <Card.Img variant="top" src={movie.Imageurl} />
+        </Link>
         <Card.Body>
           <Card.Title>{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>

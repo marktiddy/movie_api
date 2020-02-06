@@ -32476,11 +32476,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setMovies = setMovies;
 exports.setFilter = setFilter;
-exports.SET_FILTER = exports.SET_MOVIES = void 0;
+exports.setUser = setUser;
+exports.logoutUser = logoutUser;
+exports.LOGOUT_USER = exports.SET_USER = exports.SET_FILTER = exports.SET_MOVIES = void 0;
 var SET_MOVIES = "SET_MOVIES";
 exports.SET_MOVIES = SET_MOVIES;
 var SET_FILTER = "SET_FILTER";
 exports.SET_FILTER = SET_FILTER;
+var SET_USER = "SET_USER";
+exports.SET_USER = SET_USER;
+var LOGOUT_USER = "LOGOUT_USER";
+exports.LOGOUT_USER = LOGOUT_USER;
 
 function setMovies(value) {
   return {
@@ -32492,6 +32498,20 @@ function setMovies(value) {
 function setFilter(value) {
   return {
     type: SET_FILTER,
+    value: value
+  };
+}
+
+function setUser(value) {
+  return {
+    type: SET_USER,
+    value: value
+  };
+}
+
+function logoutUser(value) {
+  return {
+    type: LOGOUT_USER,
     value: value
   };
 }
@@ -32537,9 +32557,23 @@ function movies() {
   }
 }
 
+function user() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _actions.SET_USER:
+      return action.value;
+
+    default:
+      return state;
+  }
+}
+
 var rootReducer = (0, _redux.combineReducers)({
   visibilityFilter: visibilityFilter,
-  movies: movies
+  movies: movies,
+  user: user
 });
 var _default = rootReducer;
 exports.default = _default;
@@ -54374,7 +54408,7 @@ function RegistrationView(props) {
     setValidated(true);
     event.preventDefault(); //Make the request using axios
 
-    _axios.default.post("https://mtiddy-myflix.herokuapp.com/users", {
+    _axios.default.post("http://mtiddy-myflix.herokuapp.com/users", {
       Username: username,
       Password: password,
       Email: email,
@@ -54638,12 +54672,13 @@ function (_React$Component) {
         className: "born-died"
       }, "Born: ", movie.Director.Birth, _react.default.createElement("br", null), movie.Director.Death ? "Died: ".concat(movie.Director.Death) : "")), _react.default.createElement("div", {
         className: "back-button"
-      }, _react.default.createElement("br", null), _react.default.createElement(_reactRouterDom.Link, {
-        to: "/"
-      }, _react.default.createElement(_Button.default, {
-        varient: "primary",
-        className: "go-back btn-danger"
-      }, "Close")))))));
+      }, _react.default.createElement("br", null), _react.default.createElement(_Button.default, {
+        variant: "primary",
+        className: "btn-danger",
+        onClick: function onClick() {
+          window.history.back();
+        }
+      }, "Go Back"))))));
     }
   }]);
 
@@ -54763,10 +54798,12 @@ function (_React$Component) {
           width: "13rem"
         },
         key: movie._id
-      }, _react.default.createElement(_Card.default.Img, {
+      }, _react.default.createElement(_reactRouterDom.Link, {
+        to: "/movies/".concat(movie._id)
+      }, " ", _react.default.createElement(_Card.default.Img, {
         variant: "top",
         src: movie.Imageurl
-      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.Title), _react.default.createElement(_Card.default.Text, null, movie.Description), _react.default.createElement(_reactRouterDom.Link, {
+      })), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.Title), _react.default.createElement(_Card.default.Text, null, movie.Description), _react.default.createElement(_reactRouterDom.Link, {
         to: "/movies/".concat(movie._id)
       }, _react.default.createElement(_Button.default, {
         variant: "primary",
@@ -54817,8 +54854,6 @@ var _reactBootstrap = require("react-bootstrap");
 
 var _movieCard = require("../movie-card/movie-card");
 
-var _reactRouterDom = require("react-router-dom");
-
 require("./genre-view.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -54827,10 +54862,19 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+//import { Link } from "react-router-dom";
 function GenreView(props) {
   return _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_reactBootstrap.Row, {
-    className: "genre-row"
-  }, _react.default.createElement(_reactBootstrap.Col, null, _react.default.createElement("h3", null, props.genre, " Movies"))), _react.default.createElement(_reactBootstrap.Row, null, props.results.map(function (m) {
+    className: "genre-row text-left"
+  }, _react.default.createElement(_reactBootstrap.Col, null, _react.default.createElement("h3", null, props.genre, " Movies")), _react.default.createElement(_reactBootstrap.Col, {
+    className: "text-right"
+  }, _react.default.createElement(_reactBootstrap.Button, {
+    variant: "primary",
+    className: "btn-danger",
+    onClick: function onClick() {
+      window.history.back();
+    }
+  }, "Go Back"))), _react.default.createElement(_reactBootstrap.Row, null, props.results.map(function (m) {
     return _react.default.createElement(_reactBootstrap.Col, {
       key: m._id
     }, _react.default.createElement(_movieCard.MovieCard, {
@@ -54839,7 +54883,7 @@ function GenreView(props) {
     }));
   })));
 }
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./genre-view.scss":"components/genre-view/genre-view.scss"}],"components/user-view/user-view.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx","./genre-view.scss":"components/genre-view/genre-view.scss"}],"components/user-view/user-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55184,15 +55228,9 @@ function (_React$Component) {
   _inherits(MainView, _React$Component);
 
   function MainView() {
-    var _this;
-
     _classCallCheck(this, MainView);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MainView).call(this));
-    _this.state = {
-      user: null
-    };
-    return _this;
+    return _possibleConstructorReturn(this, _getPrototypeOf(MainView).call(this));
   }
 
   _createClass(MainView, [{
@@ -55212,24 +55250,19 @@ function (_React$Component) {
     value: function logOutUser() {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-
-      if (this.user) {
-        this.setState({
-          user: null
-        });
-      }
+      this.props.setUser("");
     }
   }, {
     key: "getMovies",
     value: function getMovies(token) {
-      var _this2 = this;
+      var _this = this;
 
       _axios.default.get("https://mtiddy-myflix.herokuapp.com/movies", {
         headers: {
           Authorization: "Bearer ".concat(token)
         }
       }).then(function (response) {
-        _this2.props.setMovies(response.data);
+        _this.props.setMovies(response.data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -55238,9 +55271,7 @@ function (_React$Component) {
   }, {
     key: "onLoggedIn",
     value: function onLoggedIn(authData) {
-      this.setState({
-        user: authData.user.Username
-      });
+      this.props.setUser(authData.user.Username);
       localStorage.setItem("token", authData.token);
       localStorage.setItem("user", authData.user.Username);
       this.getMovies(authData.token);
@@ -55249,12 +55280,12 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       //Get our movies from our props
-      var movies = this.props.movies; //Get user from the state
+      var movies = this.props.movies; //Get user from the props
 
-      var user = this.state.user; //New code below for the router
+      var user = this.props.user; //New code below for the router
 
       return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", {
         className: "main-view"
@@ -55264,11 +55295,14 @@ function (_React$Component) {
         exact: true,
         path: "/",
         render: function render() {
-          if (!user) return _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_loginView.LoginView, {
-            onLoggedIn: function onLoggedIn(user) {
-              return _this3.onLoggedIn(user);
-            }
-          }));
+          if (user === "") {
+            return _react.default.createElement(_reactBootstrap.Row, null, _react.default.createElement(_loginView.LoginView, {
+              onLoggedIn: function onLoggedIn(user) {
+                return _this2.onLoggedIn(user);
+              }
+            }));
+          }
+
           return _react.default.createElement(_moviesList.default, {
             movies: movies
           });
@@ -55281,7 +55315,7 @@ function (_React$Component) {
       }), _react.default.createElement(_reactRouterDom.Route, {
         path: "/logout",
         render: function render() {
-          _this3.logOutUser();
+          _this2.logOutUser();
 
           window.open("/", "_self");
         }
@@ -55336,13 +55370,15 @@ function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    movies: state.movies
+    movies: state.movies,
+    user: state.user
   };
 }; //This is what extracts the movies from the state and we pass it as the movies prop in main view
 
 
 var _default = (0, _reactRedux.connect)(mapStateToProps, {
-  setMovies: _actions.setMovies
+  setMovies: _actions.setMovies,
+  setUser: _actions.setUser
 })(MainView);
 
 exports.default = _default;
