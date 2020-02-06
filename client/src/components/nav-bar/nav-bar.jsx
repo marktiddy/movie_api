@@ -18,7 +18,7 @@ export function Navigation(user) {
         <Navbar.Text className="text-light" href={url}>
           {user.user ? `Welcome ${user.user} |` : ""}{" "}
           {user.user ? <a href={url}> Profile </a> : ""}{" "}
-          {user.user ? <a href="/logout">| Log Out</a> : ""}
+          {user.user ? <a href="/client/logout">| Log Out</a> : ""}
         </Navbar.Text>
       </Navbar.Collapse>{" "}
     </Navbar>
