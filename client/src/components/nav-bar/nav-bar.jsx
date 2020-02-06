@@ -4,7 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import "./nav-bar.scss";
 
 export function Navigation(user) {
-  const url = `/profile/${user.user}`;
+  const url = `/client/profile/${user.user}`;
   return (
     <Navbar bg="danger" variant="dark" className="navigation-bar">
       <Navbar.Brand href="/client">MyFlix DB</Navbar.Brand>
