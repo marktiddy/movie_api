@@ -26,7 +26,7 @@ export function LoginView(props) {
     event.preventDefault();
     //Make our API request
     axios
-      .post("http://mtiddy-myflix.herokuapp.com/login", {
+      .post("https://mtiddy-myflix.herokuapp.com/login", {
         Username: username,
         Password: password
       })

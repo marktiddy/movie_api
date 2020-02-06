@@ -54242,7 +54242,7 @@ function LoginView(props) {
     setValidated(true);
     event.preventDefault(); //Make our API request
 
-    _axios.default.post("http://mtiddy-myflix.herokuapp.com/login", {
+    _axios.default.post("https://mtiddy-myflix.herokuapp.com/login", {
       Username: username,
       Password: password
     }).then(function (response) {
@@ -54374,7 +54374,7 @@ function RegistrationView(props) {
     setValidated(true);
     event.preventDefault(); //Make the request using axios
 
-    _axios.default.post("http://mtiddy-myflix.herokuapp.com/users", {
+    _axios.default.post("https://mtiddy-myflix.herokuapp.com/users", {
       Username: username,
       Password: password,
       Email: email,
@@ -54895,7 +54895,7 @@ function UserView(props) {
   var deleteAccount = function deleteAccount(event) {
     var token = localStorage.getItem("token");
 
-    _axios.default.delete("http://mtiddy-myflix.herokuapp.com/users/".concat(props.user), {
+    _axios.default.delete("https://mtiddy-myflix.herokuapp.com/users/".concat(props.user), {
       headers: {
         Authorization: "Bearer ".concat(token)
       }
@@ -54931,7 +54931,7 @@ function UserView(props) {
       }
     };
 
-    _axios.default.put("http://mtiddy-myflix.herokuapp.com/users/".concat(props.user), postData, axiosConfig).then(function (response) {
+    _axios.default.put("https://mtiddy-myflix.herokuapp.com/users/".concat(props.user), postData, axiosConfig).then(function (response) {
       var data = response.data;
       console.log(data);
       window.open("/", "_self");
@@ -55009,7 +55009,12 @@ function UserView(props) {
     onClick: handleUpdate
   }, "Update Details")))));
 }
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","axios":"../node_modules/axios/index.js"}],"components/visibility-filter-input/visibility-filter-input.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","axios":"../node_modules/axios/index.js"}],"components/visibility-filter-input/visibility-filter-input.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/visibility-filter-input/visibility-filter-input.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55027,6 +55032,8 @@ var _Form = _interopRequireDefault(require("react-bootstrap/Form"));
 
 var _actions = require("../../actions/actions");
 
+require("./visibility-filter-input.scss");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function VisibilityFilterInput(props) {
@@ -55035,7 +55042,8 @@ function VisibilityFilterInput(props) {
       props.setFilter(e.target.value);
     },
     value: props.visibilityFilter,
-    placeholder: "filter"
+    placeholder: "Filter Results",
+    id: "filter-box"
   });
 }
 
@@ -55044,7 +55052,7 @@ var _default = (0, _reactRedux.connect)(null, {
 })(VisibilityFilterInput);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","../../actions/actions":"actions/actions.js"}],"components/movies-list/movies-list.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","../../actions/actions":"actions/actions.js","./visibility-filter-input.scss":"components/visibility-filter-input/visibility-filter-input.scss"}],"components/movies-list/movies-list.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55073,7 +55081,7 @@ function MoviesList(props) {
 
   if (visibilityFilter !== "") {
     filteredMovies = movies.filter(function (m) {
-      return m.Title.includes(visibilityFilter);
+      return m.Title.toLowerCase().includes(visibilityFilter.toLowerCase());
     });
   }
 
@@ -55209,7 +55217,7 @@ function (_React$Component) {
     value: function getMovies(token) {
       var _this2 = this;
 
-      _axios.default.get("http://mtiddy-myflix.herokuapp.com/movies", {
+      _axios.default.get("https://mtiddy-myflix.herokuapp.com/movies", {
         headers: {
           Authorization: "Bearer ".concat(token)
         }
@@ -55431,7 +55439,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55956" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63156" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

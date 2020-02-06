@@ -26,7 +26,7 @@ export function RegistrationView(props) {
 
     //Make the request using axios
     axios
-      .post("http://mtiddy-myflix.herokuapp.com/users", {
+      .post("https://mtiddy-myflix.herokuapp.com/users", {
         Username: username,
         Password: password,
         Email: email,

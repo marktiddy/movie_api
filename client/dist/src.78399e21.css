@@ -26,6 +26,9 @@ body {
 .genre-row {
   padding: 10px;
 }
+#filter-box {
+  margin-bottom: 20px;
+}
 .my-flix {
   color: steelblue;
 }

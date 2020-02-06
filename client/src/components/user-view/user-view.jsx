@@ -15,7 +15,7 @@ export function UserView(props) {
     let token = localStorage.getItem("token");
 
     axios
-      .delete(`http://mtiddy-myflix.herokuapp.com/users/${props.user}`, {
+      .delete(`https://mtiddy-myflix.herokuapp.com/users/${props.user}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(response => {
@@ -55,7 +55,7 @@ export function UserView(props) {
 
     axios
       .put(
-        `http://mtiddy-myflix.herokuapp.com/users/${props.user}`,
+        `https://mtiddy-myflix.herokuapp.com/users/${props.user}`,
         postData,
         axiosConfig
       )
