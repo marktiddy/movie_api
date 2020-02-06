@@ -1,7 +1,9 @@
+//Import this to enable us to combine our reducers
 import { combineReducers } from "redux";
-
+//Import our actions
 import { SET_FILTER, SET_MOVIES } from "../actions/actions";
 
+//Our reducer to filter the movies
 function visibilityFilter(state = "", action) {
   switch (action.type) {
     case SET_FILTER:
@@ -10,7 +12,7 @@ function visibilityFilter(state = "", action) {
       return state;
   }
 }
-
+//Our reducer for showing the movies
 function movies(state = [], action) {
   switch (action.type) {
     case SET_MOVIES:
@@ -20,9 +22,9 @@ function movies(state = [], action) {
   }
 }
 
-const moviesApp = combineReducers({
+const rootReducer = combineReducers({
   visibilityFilter,
   movies
 });
 
-export default moviesApp;
+export default rootReducer;
