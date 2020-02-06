@@ -6,7 +6,7 @@ const express = require("express"),
   mongoose = require("mongoose"),
   Models = require("./models.js"),
   cors = require("cors");
-
+const path = require("path");
 const { check, validationResult } = require("express-validator");
 
 //Set up cors for limited API access
@@ -44,6 +44,13 @@ mongoose.connect(
 //Get routing
 //Set up static
 app.use(express.static("public"));
+//Preparing for the client side of the app
+app.use("/client", express.static(path.join(__dirname, "client", "dist")));
+
+//Make sure we route our client requests properly
+app.get("/client/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 //Set up bodyParser
 app.use(bodyParser.json());

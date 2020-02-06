@@ -74,7 +74,7 @@ class MainView extends React.Component {
 
     //New code below for the router
     return (
-      <Router>
+      <Router basename="/client">
         <div className="main-view">
           <Navigation user={user} />
           <Container>
@@ -105,7 +105,7 @@ class MainView extends React.Component {
               path="/logout"
               render={() => {
                 this.logOutUser();
-                window.open("/", "_self");
+                window.open("/client", "_self");
               }}
             />
             <Route

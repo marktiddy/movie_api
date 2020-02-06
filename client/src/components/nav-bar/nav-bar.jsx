@@ -7,10 +7,10 @@ export function Navigation(user) {
   const url = `/profile/${user.user}`;
   return (
     <Navbar bg="danger" variant="dark" className="navigation-bar">
-      <Navbar.Brand href="/">MyFlix DB</Navbar.Brand>
+      <Navbar.Brand href="/client">MyFlix DB</Navbar.Brand>
       <Navbar.Toggle />
       <Navbar.Collapse className="text-light">
-        <a href="/" className="text-light">
+        <a href="/client" className="text-light">
           Home
         </a>
       </Navbar.Collapse>
