@@ -54893,6 +54893,13 @@ function UserView(props) {
       setValidated = _useState10[1];
 
   var deleteAccount = function deleteAccount(event) {
+    var c = confirm("Are you sure you want to delete your account?");
+
+    if (c === false) {
+      return;
+    }
+
+    console.log("deleteing the account");
     var token = localStorage.getItem("token");
 
     _axios.default.delete("https://mtiddy-myflix.herokuapp.com/users/".concat(props.user), {
@@ -54934,8 +54941,8 @@ function UserView(props) {
     _axios.default.put("https://mtiddy-myflix.herokuapp.com/users/".concat(props.user), postData, axiosConfig).then(function (response) {
       var data = response.data;
       console.log(data);
+      window.alert("Your details have been updated!");
       window.open("/", "_self");
-      console.log("the response ran");
     }).catch(function (error) {
       console.log("error happened locally ".concat(error));
     });

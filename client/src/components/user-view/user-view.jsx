@@ -12,8 +12,13 @@ export function UserView(props) {
   const [validated, setValidated] = useState(false);
 
   const deleteAccount = event => {
-    let token = localStorage.getItem("token");
+    var c = confirm("Are you sure you want to delete your account?");
+    if (c === false) {
+      return;
+    }
 
+    console.log("deleteing the account");
+    let token = localStorage.getItem("token");
     axios
       .delete(`https://mtiddy-myflix.herokuapp.com/users/${props.user}`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -62,8 +67,8 @@ export function UserView(props) {
       .then(response => {
         const data = response.data;
         console.log(data);
+        window.alert("Your details have been updated!");
         window.open("/", "_self");
-        console.log("the response ran");
       })
       .catch(error => {
         console.log(`error happened locally ${error}`);
