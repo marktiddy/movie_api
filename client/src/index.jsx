@@ -5,11 +5,6 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import store from "./store/store";
 
-// const newStore = createStore(
-//   rootReducer,
-//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// );
-
 //import our mainView class
 import MainView from "./components/main-view/main-view";
 

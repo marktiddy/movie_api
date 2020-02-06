@@ -9,9 +9,8 @@ import { MovieCard } from "../movie-card/movie-card";
 export function MoviesList(props) {
   const { movies, visibilityFilter } = props;
   let filteredMovies = movies;
-  console.log(visibilityFilter);
 
-  if (visibilityFilter !== undefined) {
+  if (visibilityFilter !== "") {
     filteredMovies = movies.filter(m => m.Title.includes(visibilityFilter));
   }
 

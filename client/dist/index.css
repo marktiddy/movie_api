@@ -1,0 +1,33 @@
+.welcome-text {
+  color: #0a61ff;
+  padding: 10px 0px 20px 0px;
+}
+
+.log-out-button {
+  padding-bottom: 20px;
+}
+.intro-box {
+  padding: 20px;
+}
+.movie-view {
+  padding: 20px;
+}
+
+.details-container {
+  padding: 5px;
+  align-items: center;
+}
+.navigation-bar {
+  margin: -20px -20px 20px -20px;
+}
+body {
+  padding: 20px;
+}
+.genre-row {
+  padding: 10px;
+}
+.my-flix {
+  color: steelblue;
+}
+
+/*# sourceMappingURL=/index.css.map */
