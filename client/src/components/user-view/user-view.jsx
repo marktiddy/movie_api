@@ -68,7 +68,7 @@ export function UserView(props) {
         const data = response.data;
         console.log(data);
         window.alert("Your details have been updated!");
-        window.open("/", "_self");
+        window.open("/client", "_self");
       })
       .catch(error => {
         console.log(`error happened locally ${error}`);
