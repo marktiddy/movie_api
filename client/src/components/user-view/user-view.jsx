@@ -163,3 +163,10 @@ export function UserView(props) {
     </Container>
   );
 }
+
+UserView.propType = {
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  birthday: PropTypes.instanceOf(Date).isRequired
+};

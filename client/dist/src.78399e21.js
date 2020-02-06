@@ -54334,8 +54334,8 @@ function LoginView(props) {
 }
 
 LoginView.propTypes = {
-  username: _propTypes.default.string.isRequired,
-  password: _propTypes.default.string.isRequired
+  username: _propTypes.default.string,
+  password: _propTypes.default.string
 };
 },{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","axios":"../node_modules/axios/index.js","react-dom":"../node_modules/react-dom/index.js","./login-view.scss":"components/login-view/login-view.scss"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
@@ -55060,6 +55060,13 @@ function UserView(props) {
     onClick: handleUpdate
   }, "Update Details")))));
 }
+
+UserView.propType = {
+  username: _propTypes.default.string.isRequired,
+  password: _propTypes.default.string.isRequired,
+  email: _propTypes.default.string.isRequired,
+  birthday: _propTypes.default.instanceOf(Date).isRequired
+};
 },{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","axios":"../node_modules/axios/index.js"}],"components/visibility-filter-input/visibility-filter-input.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
@@ -55239,9 +55246,7 @@ function (_React$Component) {
       var accessToken = localStorage.getItem("token");
 
       if (accessToken !== null) {
-        this.setState({
-          user: localStorage.getItem("user")
-        });
+        this.props.setUser(localStorage.getItem("user"));
         this.getMovies(accessToken);
       }
     }

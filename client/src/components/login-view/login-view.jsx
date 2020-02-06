@@ -110,6 +110,6 @@ export function LoginView(props) {
 }
 
 LoginView.propTypes = {
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
+  username: PropTypes.string,
+  password: PropTypes.string
 };
